@@ -6,12 +6,23 @@ body
     background: #383838;
 }
 
+p
+{
+    width:600px;
+}
+
 img{
     border-style:solid;
     border-color:#FFCC00;
     border-width:3px;
     box-shadow: 2px 2px 15px #000;
     margin: 5px;
+}
+
+#squirrellogo{
+    border-style:none;
+    box-shadow: 0px 0px 0px #000;
+    margin: 0px;
 }
 
 #page
@@ -26,7 +37,6 @@ img{
 {
     margin: 0;
     padding: 0;
-    border-top: 3px solid #1A1A1A;
 }
 
 #content
@@ -50,10 +60,7 @@ img{
 
 #logo
 {
-    font-family: Rockwell, "Courier Bold", Courier, Georgia, Times, "Times New Roman", serif;
-    padding: 10px 20px;
-    font-size: 300%;
-    background:black;
+    background:#760c0c;
 }
 
 #mainmenu

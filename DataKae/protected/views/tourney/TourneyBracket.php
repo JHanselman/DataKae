@@ -5,7 +5,7 @@ $this->pageTitle=Yii::app()->name;
 ?>
 
 <script type="text/javascript" src="../external/raphael.js"></script>
-<script type="text/javascript" src="/application/testdrive/assets/807a2310/jquery.js"></script>
+<script type="text/javascript" src="/application/DataKae/assets/807a2310/jquery.js"></script>
     <h1>Tourney bracket </h1>
     <div id="bracket">
         <script type="text/javascript">
