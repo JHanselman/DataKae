@@ -1,0 +1,109 @@
+body
+{
+    margin: 0;
+    padding: 0;
+    color: white;
+    background: #383838;
+}
+
+img{
+    border-style:solid;
+    border-color:#FFCC00;
+    border-width:3px;
+    box-shadow: 2px 2px 15px #000;
+    margin: 5px;
+}
+
+#container {
+    width: 940px; margin: 0px auto; padding: 10px 0px 50px 0px;
+    background: url(images/backgr.png);
+    box-shadow: 0px 0px 15px #000;
+}
+
+table {
+    border-spacing: 10px 0px;
+}
+
+thead th {
+    background: none;
+}
+
+th, td {
+    text-align: center; padding: 10px;
+}
+
+#container{
+overflow-y: hidden;
+}
+
+
+.header{
+    float:left;
+    width:100%;
+    background: black;
+}
+
+.row{
+    float: left;
+    width: 25%;
+    text-align: center;
+}
+
+.rowfiller{
+    float: left;
+    width: 50%;
+}
+
+.sets{
+    float:left;
+    width:100%;
+}
+
+.set{
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-style:solid;
+    border-color:black;
+    border-width:3px;
+    height: 252px;
+}
+.players{
+    float: left;
+    width: 50%;
+}
+
+.checkboxes{
+    float: left;
+    height: 10%;
+    width: 100%;
+}
+
+
+.checkbox {
+    float: left;
+    width: 50%;
+    text-align: center;
+}
+
+.player{
+    padding-top:20px;
+    float: left;
+    width: 50%;
+    text-align: center;
+}
+
+.stage{
+    float: left;
+    width: 50%;
+    text-align: center;
+}
+
+.winner{
+    float:left;
+    width: 50%;
+    height:10%;
+}
+
+h2 {
+    font-size: 24px; font-weight: normal; color: #fff; 
+}
