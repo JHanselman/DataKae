@@ -17,7 +17,7 @@ return array(
         'application.models.*',
         'application.components.*',
     ),
-
+    
     'modules'=>array(
         // uncomment the following to enable the Gii tool
         
@@ -76,6 +76,8 @@ return array(
                 */
             ),
         ),
+        //'clientScript'=>array(
+        //'coreScriptPosition' => CClientScript::POS_END),
     ),
 
     // application-level parameters that can be accessed

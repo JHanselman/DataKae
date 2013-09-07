@@ -9,7 +9,7 @@ $stageCriteria = new CDbCriteria(array('select'=>('"stageId","stageName"'),'orde
 $characters=Characters::model()->findAll($charCriteria);
 $stages=Stages::model()->findAll($stageCriteria);
 ?>
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/resultsform.css" />
+<?php Yii::app()->clientScript->registerCssFile("/application/DataKae/css/resultsform.css")?>
 <h1>Match Results:</h1>
 
 <p>Please fill out the following form with the outcome of the match:</p>
@@ -19,7 +19,7 @@ $stages=Stages::model()->findAll($stageCriteria);
         <div class="header">
             <div class="row">
                 <?php echo CHtml::activeLabel($match, "player_1")?>
-                <?php //echo $form->textField($model,'player_1'); 
+                <?php 
                 $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
                         'model'=>$match,
                         'attribute'=>'player_1',

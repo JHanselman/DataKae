@@ -1,3 +1,5 @@
+<-- A block of set results to submit -->
+
 <div class="set">
     <div class="players">
         <div class="player">
