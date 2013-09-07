@@ -54,7 +54,7 @@ class User extends CActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'matchData'=>array(self::HAS_MANY, 'MatchData', 'userId'),
-            'bla'=>array(self::HAS_ONE, 'glickoData', 'userId','condition'=>'"bla"."matchType"=\'1v1\'')
+            'glickoData'=>array(self::HAS_ONE, 'glickoData', 'userId','condition'=>'"glickoData"."matchType"=\'1v1\'')
         );
     }
 

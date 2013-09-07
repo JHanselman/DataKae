@@ -35,37 +35,29 @@ class SiteController extends Controller
         $this->render('index');
     }
 
-    public function actionForum()
-    {
-        // renders the view file 'protected/views/site/index.php'
-        // using the default layout 'protected/views/layouts/main.php'
-        $forumPath=dirname(dirname(Yii::app()->basePath)).DIRECTORY_SEPARATOR.'forum'.DIRECTORY_SEPARATOR;
-        Yii::app()->controller->renderFile($forumPath.'index.php');
-    }
+    
+    /**
+     * Displays the ranking page with the ranking list.
+     */
     public function actionRanking()
     {
+        // renders the view file 'protected/views/site/ranking.php'
+        // using the default layout 'protected/views/layouts/main.php'
+        
         $this->render('ranking');
     }
     
+    /**
+     * Displays the explanation for the ranking page.
+     */
     public function actionRanked()
     {
+        // renders the view file 'protected/views/site/ranked.php'
+        // using the default layout 'protected/views/layouts/main.php'
+        
         $this->render('ranked');
     }
     
-    
-    /**
-     * This is the action to handle external exceptions.
-     */
-    public function actionError()
-    {
-        if($error=Yii::app()->errorHandler->error)
-        {
-            if(Yii::app()->request->isAjaxRequest)
-                echo $error['message'];
-            else
-                $this->render('error', $error);
-        }
-    }
 
     /**
      * Displays the contact page
@@ -154,5 +146,19 @@ class SiteController extends Controller
         }
         // display the registration form
         $this->render('register',array('model'=>$model));
+    }
+    
+     /**
+     * This is the action to handle external exceptions.
+     */
+    public function actionError()
+    {
+        if($error=Yii::app()->errorHandler->error)
+        {
+            if(Yii::app()->request->isAjaxRequest)
+                echo $error['message'];
+            else
+                $this->render('error', $error);
+        }
     }
 }

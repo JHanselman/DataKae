@@ -8412,3 +8412,127 @@ Stack trace:
 REQUEST_URI=/application/testdrive/index.php?r=tourney/tourney
 HTTP_REFERER=http://localhost/application/testdrive/index.php?r=site/tourney
 ---
+2013/09/07 14:21:57 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] FATAL:  password authentication failed for user "postgres"' in E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\CDbConnection.php:381
+Stack trace:
+#0 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\CDbConnection.php(330): CDbConnection->open()
+#1 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CModule.php(387): CDbConnection->init()
+#3 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CApplication.php(438): CModule->getComponent('db')
+#4 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\ar\CActiveRecord.php(623): CApplication->getDb()
+#5 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\ar\CActiveRecord.php(2309): CActiveRecord->getDbConnection()
+#6 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\ar\CActiveRecord.php(387): CActiveRecordMetaData->__construct(Object(User))
+#7 E:\wamp\www\application\DataKae\protected\models\User.php(21): CActiveRecord::model('User')
+#8 E:\wamp\www\application\DataKae\protected\components\RankingCalculator.php(18): User::model()
+#9 E:\wamp\www\application\DataKae\protected\views\site\pages\about.php(14): RankingCalculator->Rank()
+#10 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CBaseController.php(126): require('E:\wamp\www\app...')
+#11 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CBaseController.php(95): CBaseController->renderInternal('E:\wamp\www\app...', NULL, true)
+#12 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(869): CBaseController->renderFile('E:\wamp\www\app...', NULL, true)
+#13 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(782): CController->renderPartial('pages/about', NULL, true)
+#14 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CViewAction.php(140): CController->render('pages/about')
+#15 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CAction.php(76): CViewAction->run()
+#16 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(308): CAction->runWithParams(Array)
+#17 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(286): CController->runAction(Object(CViewAction))
+#18 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(265): CController->runActionWithFilters(Object(CViewAction), Array)
+#19 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(282): CController->run('page')
+#20 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(141): CWebApplication->runController('site/page')
+#21 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#22 E:\wamp\www\application\DataKae\index.php(13): CApplication->run()
+#23 {main}
+REQUEST_URI=/application/DataKae/index.php?r=site/page&view=about
+HTTP_REFERER=http://localhost/application/DataKae/
+---
+2013/09/07 14:25:14 [error] [php] Undefined variable: playerRecord (E:\wamp\www\application\DataKae\protected\components\RankingCalculator.php:33)
+Stack trace:
+#0 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CBaseController.php(95): SiteController->renderInternal()
+#1 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(869): SiteController->renderFile()
+#2 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(782): SiteController->renderPartial()
+#3 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CViewAction.php(140): SiteController->render()
+#4 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CAction.php(76): CViewAction->run()
+#5 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(308): CViewAction->runWithParams()
+#6 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(286): SiteController->runAction()
+#7 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(265): SiteController->runActionWithFilters()
+#8 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(282): SiteController->run()
+#9 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#11 E:\wamp\www\application\DataKae\index.php(13): CWebApplication->run()
+REQUEST_URI=/application/DataKae/index.php?r=site/page&view=about
+in E:\wamp\www\application\DataKae\protected\components\RankingCalculator.php (33)
+in E:\wamp\www\application\DataKae\protected\views\site\pages\about.php (14)
+in E:\wamp\www\application\DataKae\index.php (13)
+2013/09/07 14:25:42 [error] [php] Undefined variable: playerRecord (E:\wamp\www\application\DataKae\protected\components\RankingCalculator.php:39)
+Stack trace:
+#0 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CBaseController.php(95): SiteController->renderInternal()
+#1 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(869): SiteController->renderFile()
+#2 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(782): SiteController->renderPartial()
+#3 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CViewAction.php(140): SiteController->render()
+#4 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CAction.php(76): CViewAction->run()
+#5 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(308): CViewAction->runWithParams()
+#6 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(286): SiteController->runAction()
+#7 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(265): SiteController->runActionWithFilters()
+#8 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(282): SiteController->run()
+#9 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#11 E:\wamp\www\application\DataKae\index.php(13): CWebApplication->run()
+REQUEST_URI=/application/DataKae/index.php?r=site/page&view=about
+in E:\wamp\www\application\DataKae\protected\components\RankingCalculator.php (39)
+in E:\wamp\www\application\DataKae\protected\views\site\pages\about.php (14)
+in E:\wamp\www\application\DataKae\index.php (13)
+2013/09/07 14:29:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested view "contact" was not found.' in E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CViewAction.php:112
+Stack trace:
+#0 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CViewAction.php(123): CViewAction->resolveView('contact')
+#1 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CAction.php(76): CViewAction->run()
+#2 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(308): CAction->runWithParams(Array)
+#3 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(286): CController->runAction(Object(CViewAction))
+#4 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(265): CController->runActionWithFilters(Object(CViewAction), Array)
+#5 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(282): CController->run('page')
+#6 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(141): CWebApplication->runController('site/page')
+#7 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#8 E:\wamp\www\application\DataKae\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/application/DataKae/index.php?r=site/page&view=contact
+HTTP_REFERER=http://localhost/application/DataKae/index.php?r=site/index
+---
+2013/09/07 14:29:59 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested view "contact" was not found.' in E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CViewAction.php:112
+Stack trace:
+#0 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CViewAction.php(123): CViewAction->resolveView('contact')
+#1 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CAction.php(76): CViewAction->run()
+#2 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(308): CAction->runWithParams(Array)
+#3 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(286): CController->runAction(Object(CViewAction))
+#4 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(265): CController->runActionWithFilters(Object(CViewAction), Array)
+#5 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(282): CController->run('page')
+#6 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(141): CWebApplication->runController('site/page')
+#7 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#8 E:\wamp\www\application\DataKae\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/application/DataKae/index.php?r=site/page&view=contact
+HTTP_REFERER=http://localhost/application/DataKae/index.php?r=site/index
+---
+2013/09/07 15:05:20 [error] [exception.CException] exception 'CException' with message 'Alias "ext.wr.WithRelatedBehavior" is invalid. Make sure it points to an existing PHP file and the file is readable.' in E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\YiiBase.php:316
+Stack trace:
+#0 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\YiiBase.php(196): YiiBase::import('ext.wr.WithRela...', true)
+#1 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CComponent.php(326): YiiBase::createComponent(Array)
+#2 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CComponent.php(297): CComponent->attachBehavior('withRelated', Array)
+#3 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\ar\CActiveRecord.php(388): CComponent->attachBehaviors(Array)
+#4 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\ar\CActiveFinder.php(215): CActiveRecord::model('MatchData')
+#5 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\ar\CActiveFinder.php(48): CActiveFinder->buildJoinTree(Object(CJoinElement), 'matchData')
+#6 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\ar\CActiveRecord.php(271): CActiveFinder->__construct(Object(User), 'matchData')
+#7 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\db\ar\CActiveRecord.php(141): CActiveRecord->getRelated('matchData')
+#8 E:\wamp\www\application\DataKae\protected\components\RankingCalculator.php(27): CActiveRecord->__get('matchData')
+#9 E:\wamp\www\application\DataKae\protected\views\site\pages\about.php(14): RankingCalculator->Rank()
+#10 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CBaseController.php(126): require('E:\wamp\www\app...')
+#11 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CBaseController.php(95): CBaseController->renderInternal('E:\wamp\www\app...', NULL, true)
+#12 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(869): CBaseController->renderFile('E:\wamp\www\app...', NULL, true)
+#13 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(782): CController->renderPartial('pages/about', NULL, true)
+#14 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CViewAction.php(140): CController->render('pages/about')
+#15 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\actions\CAction.php(76): CViewAction->run()
+#16 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(308): CAction->runWithParams(Array)
+#17 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(286): CController->runAction(Object(CViewAction))
+#18 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CController.php(265): CController->runActionWithFilters(Object(CViewAction), Array)
+#19 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(282): CController->run('page')
+#20 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\web\CWebApplication.php(141): CWebApplication->runController('site/page')
+#21 E:\wamp\www\application\external\yii-1.1.13.e9e4a0\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#22 E:\wamp\www\application\DataKae\index.php(13): CApplication->run()
+#23 {main}
+REQUEST_URI=/application/DataKae/index.php?r=site/page&view=about
+HTTP_REFERER=http://localhost/application/DataKae/index.php?r=tourney/generator
+---

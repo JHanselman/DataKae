@@ -42,7 +42,8 @@
                 
                 array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Tourney', 'url'=>array('/tourney/generator')),
-                array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about'))
+                array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+                array('label'=>'Contact', 'url'=>array('/site/contact', 'view'=>'contact'))
             ),
         )); ?>
         

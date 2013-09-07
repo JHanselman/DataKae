@@ -1,94 +1,71 @@
 <?php
+/*
+ *Class that runs a script to recalculate the Glicko 2 ranking.
+ *
+ */
+ 
+define('factor', 400/log(10));  //Constant to transfer from the Glicko 1 scale to the Glicko 2 scale.
+define('TAU',0.5);              //Constant that determines the change in volatility.
 
-    define('factor', 400/log(10));
 class RankingCalculator
 {
-    const TAU=0.5;
-    
+    //Calculates ranking for all players in the database.
     public function Rank()
     {
+        //Find all players that want to be ranked
         $criteria=new CDbCriteria(); 
         $criteria->condition = "\"Ranked\"=TRUE";
         $players=User::model()->findAll($criteria);
         $bla=array();
         
-        $players;
         
         foreach($players as $player)
         {
-            //$user
-            $playedMatches = $player->matchData;
             $opponents=array();
+        
+            //Find all matches played by the player.
+            $playedMatches = $player->matchData;
             
-            
-            
-            
-            foreach($playedMatches as $playerRecord)
+            //For each played match
+            foreach($playedMatches as $playedMatch)
             {
+                //Find all players participating in the match.
+                $match=Match::model()->findByPk($playedMatch->matchId);
+                $PlayersInMatch=$match->matchData;
                 
-                $match=Match::model()->findByPk($playerRecord->matchId);
-                $PlayersSets=$match->matchData;
-                foreach($PlayersSets as $goobie)
+                foreach($PlayersInMatch as $PlayerInMatch)
                 {
-                    if ($goobie->userId!=$playerRecord->userId)
+                    //Check if the player was an opponent
+                    if ($PlayerInMatch->userId!=$playedMatch->userId)
                     {
-                        $OppGlicko=GlickoData::model()->findByAttributes(array('userId' => $goobie->userId, 'matchType' => '1v1'));
+                        //Find the opponent's Glicko data.
+                        $OppGlicko=GlickoData::model()->findByAttributes(array('userId' => $PlayerInMatch->userId, 'matchType' => '1v1'));
                         
-                        file_put_contents('E:/wamp/www/logo.txt', $p, FILE_APPEND | LOCK_EX);
+                        //Calculate the score
+                        $score = ($playedMatch->score>$PlayerInMatch->score) ? 1 : ($playedMatch->score==$PlayerInMatch->score ? 0.5 : 0);  
                         
-                        $score = ($playerRecord->score>$goobie->score) ? 1 : ($playerRecord->score==$goobie->score ? 0.5 : 0);  
+                        //Add opponent to the opponent list
                         $opponents[]=new Opponent(($OppGlicko->rating-1500)/factor,($OppGlicko->RD)/factor, $score);
                     }
                 }
             }
             
-            $glicko= $player->bla;
-            
+            //Calculate a player's new ranking
+            $glicko= $player->glickoData;
             $p = new Player(($glicko->rating-1500)/factor, ($glicko->RD)/factor, $glicko->volatility, $opponents);
             $p->calculateNewRanking();
-            //return $p->mu;
-            //return $p->phi;
         }
-        /*
-        $player=new Player();
-        $player->mu=0;
-        $player->phi=200/173.7178;
-        $player->sigma=0.06;
-        
-        $opp1=new Opponent;
-        $opp2=new Opponent;
-        $opp3=new Opponent;
-        
-        $opp1->mu=(1400-1500)/173.7178;
-        $opp2->mu=(1550-1500)/173.7178;
-        $opp3->mu=(1700-1500)/173.7178;
-        
-        $opp1->phi=30/173.7178;
-        $opp2->phi=100/173.7178;
-        $opp3->phi=300/173.7178;
-        
-        $opp1->s=1;
-        $opp2->s=0;
-        $opp3->s=0;
-        
-        $player->opponents=array($opp1,$opp2,$opp3);
-        //return $opp3->phi;
-        $v=$player->calculateV();
-        
-        return serialize($bla);
-        return $player->determineVolatility($v);
-        */
     }
 }
 
+//A class that models a player. Used to calculate the new ranking
 class Player
 {
-    public $mu;
-    public $phi;
-    public $sigma;
-    public $v;
-
-    public $opponents;
+    public $mu;    //the rating
+    public $phi;   //rating deviation
+    public $sigma; //volatility
+    public $v;     //Estimated variance based on how the player played against his opponents
+    public $opponents; //Array of objects of the Opponent class
     
     function __construct($mu, $phi, $sigma, $opponents)
     {
@@ -96,8 +73,10 @@ class Player
         $this->mu=$mu;
         $this->sigma=$sigma;
         $this->opponents=$opponents;
+        $preDelta=$this->calculatePreDelta();
     }
     
+    //Calculates the estimated variance
     private function calculateV()
     {
         $result=0;
@@ -113,6 +92,7 @@ class Player
         $this->v = (1/$result);
     }
     
+    //Calculates the expected outcome of a match played against the opponent used as input
     private function expectation($opponent)
     {
         $phi_j=$opponent->phi;
@@ -121,6 +101,7 @@ class Player
         return (1/(1.0+exp(-Player::functionG($phi_j)*($this->mu-$mu_j))));
     }
     
+    //
     private function functionF($x,$a)
     {
         $v=$this->v;
@@ -131,7 +112,7 @@ class Player
         $botterm1=2*pow(pow($this->phi,2)+$v+$ex,2);
         
         $topterm2=$x-$a;
-        $botterm2=pow(RankingCalculator::TAU,2);
+        $botterm2=pow(TAU,2);
         
         return ($topterm1/$botterm1-$topterm2/$botterm2);
         
@@ -169,15 +150,9 @@ class Player
             $this->calculateV();
             $phistar=sqrt(pow($this->phi,2)+pow($this->determineVolatility(),2));
             
-
             $this->phi=1/(sqrt(1/pow($phistar,2)+1/($this->v)));
             
-            
             $this->mu=$this->mu+pow(($this->phi),2)*($this->calculatePreDelta());
-            
-            file_put_contents('E:/wamp/www/logo.txt', $this->mu." ", FILE_APPEND | LOCK_EX);
-            file_put_contents('E:/wamp/www/logo.txt', $this->phi." ", FILE_APPEND | LOCK_EX);
-            
         }
         else
         {
@@ -186,16 +161,18 @@ class Player
         }
     }
     
-    
+    //Calculates teh new volatility 
     public function determineVolatility()
     {
         $v=$this->v;
         $a=log(pow($this->sigma,2));
+        
         $A=$a;
         $B;
-        $epsilon=0.000001;
         
-        $D2=pow($this->calculateDelta(),2);
+        $epsilon=0.000001; //The convergence tolerance
+        
+        $D2=pow($this->calculateDelta(),2); //Delta^2
         
         
         if ($D2>(pow($this->phi,2)+$v))
@@ -203,17 +180,18 @@ class Player
         else
         {
             $k=1;
-            while($this->functionF($a-$k*(RankingCalculator::TAU),$a)<0)
+            while($this->functionF($a-$k*TAU,$a)<0)
                 {
                     $k++;
                 }
-            $B=$a-$k*(RankingCalculator::TAU);
+            $B=$a-$k*TAU;
         }
         
         
         $f_A=$this->functionF($A,$a);
         $f_B=$this->functionF($B,$a);
         
+        //Iterate until we have converged enough
         while(abs($B-$A)>$epsilon)
         {
             $C=$A+($A-$B)*$f_A/($f_B-$f_A);
@@ -232,11 +210,13 @@ class Player
             
            
         }
+        
+        //return the result
         return exp($A/2);
     }
 }
 
-
+//A class that models an opponent and his ranking data.
 class Opponent
 {
     public $mu;

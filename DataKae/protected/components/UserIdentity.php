@@ -11,12 +11,7 @@
 class UserIdentity extends CUserIdentity
 {
     /**
-     * Authenticates a user.
-     * The example implementation makes sure if the username and password
-     * are both 'demo'.
-     * In practical applications, this should be changed to authenticate
-     * against some persistent user identity storage (e.g. database).
-     * @return boolean whether authentication succeeds.
+     * Authenticates a user using a password.
      */
 
     private $_id;
@@ -38,6 +33,13 @@ class UserIdentity extends CUserIdentity
 
     }
     
+    /*
+     * Password hashing with PBKDF2.
+     * Author: havoc AT defuse.ca
+     * www: https://defuse.ca/php-pbkdf2.htm
+     */
+     
+    //validates the password
     private function validate_password($password, $correct_hash)
     {
         
@@ -61,7 +63,8 @@ class UserIdentity extends CUserIdentity
         );
     }
 
-    // Compares two strings $a and $b in length-constant time.
+    // Compares two strings $a and $b in length-constant time. This prevents hackers
+    //from finding out whether their guesses are correct from how long it takes to compare strings.
     private function slow_equals($a, $b)
     {
         $diff = strlen($a) ^ strlen($b);
@@ -72,6 +75,21 @@ class UserIdentity extends CUserIdentity
         return $diff === 0;
     }
     
+/*
+ * PBKDF2 key derivation function as defined by RSA's PKCS #5: https://www.ietf.org/rfc/rfc2898.txt
+ * $algorithm - The hash algorithm to use. Recommended: SHA256
+ * $password - The password.
+ * $salt - A salt that is unique to the password.
+ * $count - Iteration count. Higher is better, but slower. Recommended: At least 1000.
+ * $key_length - The length of the derived key in bytes.
+ * $raw_output - If true, the key is returned in raw binary format. Hex encoded otherwise.
+ * Returns: A $key_length-byte key derived from the password and salt.
+ *
+ * Test vectors can be found here: https://www.ietf.org/rfc/rfc6070.txt
+ *
+ * This implementation of PBKDF2 was originally created by https://defuse.ca
+ * With improvements by http://www.variations-of-shadow.com
+ */
     private function pbkdf2($algorithm, $password, $salt, $count, $key_length, $raw_output = false)
     {
         $algorithm = strtolower($algorithm);

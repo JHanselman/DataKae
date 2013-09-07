@@ -115,17 +115,18 @@ $this->pageTitle=Yii::app()->name;
         }
         function drawNode(node,x,y,depth)
         {
-            drawnNodes[node.id] = paper.rect(x,y,matchx,matchy).attr({fill: "orange"});
+            drawnNodes[node.id] = paper.rect(x,y,matchx,matchy).attr({fill: "#760c0c"});
             if (node.name!=null)
             {
                 var name=paper.text(x+matchx/2,y+matchy/2,node.name);
                 name.attr({"font-size":16});
+                name.attr({'fill':'#ffffff'});
             }
             drawnNodes[node.id].node.onmouseover = function () {
                 drawnNodes[node.id].attr("fill", "red");
             };
             drawnNodes[node.id].node.onmouseout = function () {
-                drawnNodes[node.id].attr("fill", "orange");
+                drawnNodes[node.id].attr("fill", "#760c0c");
             };
             if(node.left!=null)
             {
