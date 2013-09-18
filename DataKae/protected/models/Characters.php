@@ -4,11 +4,8 @@
  * This is the model class for table "Characters".
  *
  * The followings are the available columns in table 'Characters':
- * @property integer $characterId
- * @property string $characterName
- *
- * The followings are the available model relations:
- * @property Characters[] $characterrs
+ * integer $characterId
+ * string $characterName
  */
 class Characters extends CActiveRecord
 {

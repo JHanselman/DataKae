@@ -1,15 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "Users".
+ * This is the model class for table "Tournaments".
  *
- * The followings are the available columns in table 'tbl_user':
- * @property integer $id
- * @property string $username
- * @property string $password
- * @property string $email
+ * The followings are the available columns in table 'Tournaments':
+ * tournamentId serial
+ * tournamentName character varying
+ * locationId integer
+ * startDate date
+ * endDate date
+ * rulesetId integer
+ * financesId integer
+ * totalEntrants integer
+ * totalDuration interval
  */
-class User extends CActiveRecord
+class Tournament extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
@@ -26,7 +31,7 @@ class User extends CActiveRecord
      */
     public function tableName()
     {
-        return 'Users';
+        return 'Tournaments';
     }
 
     /**
@@ -37,24 +42,11 @@ class User extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('userName, passwordHash, emailAddress', 'required'),
-            array('userName, passwordHash, emailAddress', 'length', 'max'=>128),
+            array('tournamentName, locationId, startDate, endDate, rulesetId', 'required'),
+            array('tournamentName', 'length', 'max'=>128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, userName, passwordHash, emailAddress', 'safe', 'on'=>'search'),
-        );
-    }
-
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return array(
-            'matchData'=>array(self::HAS_MANY, 'MatchData', 'userId'),
-            'glickoData'=>array(self::HAS_ONE, 'glickoData', 'userId','condition'=>'"glickoData"."matchType"=\'1v1\'')
+            array('tournamentName, locationId, startDate, endDate, rulesetId', 'safe', 'on'=>'search'),
         );
     }
 
@@ -64,11 +56,11 @@ class User extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'userId' => 'ID',
-            'userName' => 'Username',
-            'passwordHash' => 'PasswordHash',
-            'emailAdress' => 'Email',
-            'region' => 'Region',
+            'tournamentName' => 'name',
+            'locationId' => 'location',
+            'startDate' => 'start date',
+            'endDate' => 'end date',
+            'rulesetId' => 'ruleset',
         );
     }
 
@@ -83,13 +75,21 @@ class User extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('userId',$this->userId);
-        $criteria->compare('userName',$this->userName,true);
-        $criteria->compare('passwordHash',$this->passwordHash,true);
-        $criteria->compare('emailAdress',$this->emailAddress,true);
-
+        $criteria->compare('tournamentId',$this->tournamentId);
+        $criteria->compare('"tournamentName"',$this->tournamentName, true);
+        $criteria->compare('locationId',$this->locationId);
+        $criteria->compare('"startDate"',$this->startDate);
+        $criteria->compare('endDate',$this->endDate);
+        $criteria->compare('rulesetId',$this->rulesetId);
+        
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+            'sort'=>array(
+            'defaultOrder'=>'"startDate" DESC',
+        ),
+        'pagination'=>array(
+            'pageSize'=>20
+      ),
         ));
     }
 }

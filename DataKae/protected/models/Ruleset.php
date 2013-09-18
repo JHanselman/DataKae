@@ -1,17 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "Locations".
+ * This is the model class for table "Rulesets".
  *
  * The followings are the available columns in table 'Locations':
- * @property integer $regionId
- * @property string $regionName
- * @property string $regionCode
- *
+  "rulesetId" serial NOT NULL,
+  "rulesetName" character varying NOT NULL,
+  "matchType" character varying NOT NULL DEFAULT '1v1'::character varying,
+  "matchMode" character varying NOT NULL DEFAULT 'Stocks'::character varying,
+  "numberStocks" integer NOT NULL DEFAULT 4,
+  "numberTimer" interval NOT NULL DEFAULT '00:08:00'::interval,
+  "itemRate" character varying NOT NULL DEFAULT 'None'::character varying,
+  "specialRules" character varying,
  * The followings are the available model relations:
  * @property Users[] $users
  */
-class Regions extends CActiveRecord
+class Ruleset extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
@@ -28,24 +32,9 @@ class Regions extends CActiveRecord
      */
     public function tableName()
     {
-        return 'Regions';
+        return 'Rulesets';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
-    public function rules()
-    {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
-        return array(
-            array('regionName', 'length', 'max'=>50),
-            array('regionCode', 'length', 'max'=>5),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('regionId, regionName, regionCode', 'safe', 'on'=>'search'),
-        );
-    }
 
     /**
      * @return array relational rules.
@@ -55,7 +44,7 @@ class Regions extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'users' => array(self::HAS_MANY, 'Users', 'region'),
+            'users' => array(self::HAS_MANY, 'Users', 'location'),
         );
     }
 
@@ -65,9 +54,8 @@ class Regions extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'regionId' => 'Region',
-            'regionName' => 'Region Name',
-            'regionCode' => 'Region Code',
+            'rulesetId' => 'Ruleset Id',
+            'rulesetName' => 'Ruleset Name',
         );
     }
 
@@ -82,10 +70,9 @@ class Regions extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('regionId',$this->regionId);
-        $criteria->compare('regionName',$this->regionName,true);
-        $criteria->compare('regionCode',$this->regionCode,true);
-
+        $criteria->compare('rulesetId',$this->rulesetId);
+        $criteria->compare('rulesetName',$this->rulesetName,true);
+        
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));

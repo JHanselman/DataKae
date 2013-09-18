@@ -37,7 +37,7 @@ return array(
             'allowAutoLogin'=>true,
         ),
         // uncomment the following to enable URLs in path-format
-        /*
+        
         'urlManager'=>array(
             'urlFormat'=>'path',
             'rules'=>array(
@@ -45,13 +45,13 @@ return array(
                 '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
                 '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
             ),
-        ),*/
+        ),
         
         
         // Connect to the postgres database
         'db'=>array(
         'tablePrefix'=>'',
-        'connectionString' => 'pgsql:host=localhost;port=5432;dbname=Aylas3DSPlace',
+        'connectionString' => 'pgsql:host=localhost;port=5432;dbname=DataKaeDatabase',
         'username'=>'postgres',
         'password'=>'somepassw',
         'charset'=>'UTF8',

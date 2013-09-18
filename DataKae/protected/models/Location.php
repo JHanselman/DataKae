@@ -1,47 +1,34 @@
 <?php
 
 /**
- * This is the model class for table "Match".
+ * This is the model class for table "Locations".
  *
- * The followings are the available columns in table 'Match':
-   matchId integer,
-   tournamentId integer,
-   roundId integer,
-   previousMatch integer,
-   nextMatch  integer,
-   player1 integer,
-   player2 integer,
-   player3 integer,
-   player4 integer,
-   winner1 integer, 
-   winner2 integer
+ * The followings are the available columns in table 'Locations':
+ * @property integer $locationId
+ * @property string $locationName
+ * @property string $locationCode
+ *
+ * The followings are the available model relations:
+ * @property Users[] $users
  */
-class Match extends CActiveRecord
+class Location extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return User the static model class
+     * @return Regions the static model class
      */
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
     }
 
-    public function behaviors()
-    {
-    return array(
-        'withRelated'=>array(
-            'class'=>'ext.wr.WithRelatedBehavior',
-        ),
-    );
-    }
     /**
      * @return string the associated database table name
      */
     public function tableName()
     {
-        return 'Matches';
+        return 'Location';
     }
 
     /**
@@ -52,11 +39,11 @@ class Match extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            //array('userName, passwordHash, emailAddress', 'required'),
-            //array('userName, passwordHash, emailAddress', 'length', 'max'=>128),
+            array('locationName', 'length', 'max'=>50),
+            array('locationCode', 'length', 'max'=>5),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            //array('id, userName, passwordHash, emailAddress', 'safe', 'on'=>'search'),
+            array('locationId, locationName, locationCode', 'safe', 'on'=>'search'),
         );
     }
 
@@ -68,8 +55,7 @@ class Match extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'sets'=>array(self::HAS_ONE, 'Game', 'matchId'),
-            'matchData'=>array(self::HAS_MANY, 'MatchData', 'matchId')
+            'users' => array(self::HAS_MANY, 'Users', 'location'),
         );
     }
 
@@ -79,6 +65,11 @@ class Match extends CActiveRecord
     public function attributeLabels()
     {
         return array(
+            'locationId' => 'Region',
+            'locationName' => 'Location Name',
+            'locationCode' => 'Location Code',
+            'regonName' => 'Region Name',
+            'regionCode' => 'Region Code',
         );
     }
 
@@ -93,17 +84,12 @@ class Match extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('matchId',$this->matchId);
-        $criteria->compare('roundId',$this->roundId,true);
-        $criteria->compare('previousMatch',$this->previousMatch,true);
-        $criteria->compare('nextMatch',$this->nextMatch,true);
-        $criteria->compare('player1',$this->player1,true);
-        $criteria->compare('player2',$this->player2,true);
-        $criteria->compare('player3',$this->player3,true);
-        $criteria->compare('player4',$this->player4,true);
-        $criteria->compare('winner1',$this->winner1,true);
-        $criteria->compare('winner2',$this->winner2,true);
-
+        $criteria->compare('locationId',$this->locationId);
+        $criteria->compare('locationName',$this->locationName,true);
+        $criteria->compare('locationCode',$this->locationCode,true);
+        $criteria->compare('regionName',$this->regionName,true);
+        $criteria->compare('regionCode',$this->regionCode,true);
+        
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));

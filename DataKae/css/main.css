@@ -360,7 +360,7 @@ div.bar {
     width:700px;
     height:700px;
     border:10px solid #000;
-    background-color: #666;
+    
     overflow: none;
     
     -ms-user-select: none; 
@@ -372,3 +372,17 @@ div.bar {
     user-select: none;
 }
 
+#TourneyGrid
+{
+    width: 60%;
+    float: left;
+    padding: 20px;
+}
+
+#rightView
+{
+    padding: 5px;
+    width: 30%;
+    float: left;
+    background-color: #111;
+}

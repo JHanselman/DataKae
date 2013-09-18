@@ -1,0 +1,24 @@
+extra ,
+Tournament above Organization
+8 to '0:08:00'
+Rounds -> integer
+
+serial to integer for all foreign keys
+characterGlickoData useless
+
+Finances-> winnings?
+Why link characters, items and stages to tournament and not to ruleset?
+And link a tourney to a ruleset
+
+striking stuff....call it banned 
+I'm a bit iffy on doing it on game level.
+Perhaps on match level and reference the game the ban took place?
+
+Users
+playerId not null?
+
+previous and next match?
+
+location/region
+
+finances and ruleset null

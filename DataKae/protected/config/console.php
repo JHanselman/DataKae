@@ -14,7 +14,7 @@ return array(
         // Connect to the postgres database
         'db'=>array(
         'tablePrefix'=>'',
-        'connectionString' => 'pgsql:host=localhost;port=5432;dbname=Aylas3DSPlace',
+        'connectionString' => 'pgsql:host=localhost;port=5432;dbname=DataKaeDatabase',
         'username'=>'postgres',
         'password'=>'somepassw',
         'charset'=>'UTF8',

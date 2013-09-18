@@ -6,10 +6,10 @@
 //$cs = Yii::app()->getClientScript();
 //$cs->registerScriptFile('/application/external/jquery-2.0.2.js');
 
-$criteria = new CDbCriteria(array('select'=>('"regionId","regionName"'),'order'=>'"regionName" ASC'));
+$criteria = new CDbCriteria(array('select'=>('"locationId","locationName"'),'order'=>'"locationName" ASC'));
     
-$regions=Regions::model()->findAll($criteria);
-$region='empty';
+$locations=Location::model()->findAll($criteria);
+$location='empty';
 $this->pageTitle=Yii::app()->name . ' - Register';
 $this->breadcrumbs=array(
     'Register',
@@ -49,16 +49,10 @@ $this->breadcrumbs=array(
         <?php echo $form->error($model,'emailAddress'); ?>
     </div>
     
-    <div class="row">
-        <?php echo $form->labelEx($model,'friendcode'); ?>
-        <?php echo $form->textField($model,'friendcode'); ?>
-        <?php echo $form->error($model,'friendcode'); ?>
-    </div>
-    
     <div class="dropdownbox">
-        <?php echo $form->labelEx($model,'regionName'); ?>
-        <?php echo $form->dropDownList($model,'regionId', CHtml::listData($regions,'regionId','regionName'),array('empty' => '(Select a region)')); ?>
-        <?php echo $form->error($model,'region'); ?>
+        <?php echo $form->labelEx($model,'locationName'); ?>
+        <?php echo $form->dropDownList($model,'locationId', CHtml::listData($locations,'locationId','locationName'),array('empty' => '(Select a location)')); ?>
+        <?php echo $form->error($model,'location'); ?>
     </div>
     
     <?php if(CCaptcha::checkRequirements()): ?>

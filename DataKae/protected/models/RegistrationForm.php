@@ -13,8 +13,7 @@ class RegistrationForm extends CFormModel
 
     public $username;
     public $password;
-    public $friendcode;
-    public $regionId;
+    public $locationId;
     public $emailAddress;
     public $verifyCode;
     
@@ -48,7 +47,7 @@ class RegistrationForm extends CFormModel
     {
         return array(
             // username and password are required
-            array('username, password, friendcode, regionId, emailAddress', 'safe'),
+            array('username, password, locationId, emailAddress', 'safe'),
             array('username, password, emailAddress', 'required'),
             array('password', 'passwordStrength', 'strength'=>self::STRONG),
             //array('emailAddress', 'email'),
@@ -65,8 +64,7 @@ class RegistrationForm extends CFormModel
         $newUser=new User;
         $newUser->userName = $this->username;
         $newUser->passwordHash=$this->create_hash($this->password);
-        $newUser->friendCode=$this->friendcode;
-        $newUser->regionId=$this->regionId;
+        $newUser->locationId=$this->locationId;
         $newUser->emailAddress=$this->emailAddress;
         if ($newUser->save())
         {
@@ -131,7 +129,6 @@ class RegistrationForm extends CFormModel
             'username'=>'Username',
             'password'=>'Password',
             'emailAddress'=>'E-mail address',
-            'friendcode'=>'3DS Friend Code',
             'verifyCode'=>'Verification Code',
         );
     }
