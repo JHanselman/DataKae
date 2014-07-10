@@ -1,40 +1,5 @@
 BEGIN TRANSACTION;
 
-CREATE TABLE "AuthAssignment"
-(
-  itemname character varying(64) NOT NULL,
-  userid character varying(64) NOT NULL,
-  bizrule text,
-  data text,
-  CONSTRAINT "AuthAssignment_pkey" PRIMARY KEY (itemname, userid),
-  CONSTRAINT "AuthAssignment_itemname_fkey" FOREIGN KEY (itemname)
-      REFERENCES "AuthItem" (name) MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE "AuthItem"
-(
-  name character varying(64) NOT NULL,
-  type integer NOT NULL,
-  description text,
-  bizrule text,
-  data text,
-  CONSTRAINT "AuthItem_pkey" PRIMARY KEY (name)
-);
-
-CREATE TABLE "AuthItemChild"
-(
-  parent character varying(64) NOT NULL,
-  child character varying(64) NOT NULL,
-  CONSTRAINT "AuthItemChild_pkey" PRIMARY KEY (parent, child),
-  CONSTRAINT "AuthItemChild_child_fkey" FOREIGN KEY (child)
-      REFERENCES "AuthItem" (name) MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT "AuthItemChild_parent_fkey" FOREIGN KEY (parent)
-      REFERENCES "AuthItem" (name) MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 CREATE TABLE "Location"
 (
   "locationId" serial NOT NULL,
@@ -68,6 +33,7 @@ CREATE TABLE "Users"
   "userName" character varying NOT NULL,
   "emailAddress" character varying NOT NULL,
   "passwordHash" character varying(100) NOT NULL,
+  "role" integer NOT NULL DEFAULT 0,
   
   PRIMARY KEY ("userId"),
   FOREIGN KEY ("playerId") REFERENCES "Players",
@@ -145,8 +111,8 @@ CREATE TABLE "Tournaments"
   "locationId" integer NOT NULL,
   "startDate" date NOT NULL,
   "endDate" date,
-  "rulesetId" integer,
-  "financesId" integer,
+  "rulesetId" integer NOT NULL,
+  "financesId" integer NOT NULL,
   "totalEntrants" integer,
   "totalDuration" interval,
   
@@ -242,7 +208,7 @@ CREATE TABLE "Matches"
 (
   "matchId" serial NOT NULL,
   "tournamentId" integer NOT NULL,
-  "roundId" integer,
+  "roundId" integer NOT NULL,
   "previousMatch" integer,
   "nextMatch" integer,
   "player1" integer NOT NULL,
@@ -276,7 +242,7 @@ CREATE TABLE "Games"
   "characterPlayer3" integer,
   "characterPlayer4" integer,
   "stage" character varying NOT NULL,
-  "stagePicker1" integer,
+  "stagePicker1" integer NOT NULL,
   "stagePicker2" integer,
   "player1StocksLeft" integer DEFAULT 0,
   "player2StocksLeft" integer DEFAULT 0,
@@ -286,7 +252,7 @@ CREATE TABLE "Games"
   "player2Percentage" integer,
   "player3Percentage" integer,
   "player4Percentage" integer,
-  "timeLeft" interval,
+  "timeLeft" interval NOT NULL,
   "winner1" integer NOT NULL,
   "winner2" integer,
   "link" character varying,
