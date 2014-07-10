@@ -36,6 +36,8 @@ return array(
             // enable cookie-based authentication
             'allowAutoLogin'=>true,
         ),
+        
+        
         // uncomment the following to enable URLs in path-format
         
         'urlManager'=>array(
@@ -55,6 +57,15 @@ return array(
         'username'=>'postgres',
         'password'=>'somepassw',
         'charset'=>'UTF8',
+        'enableProfiling'=>true,
+        'enableParamLogging' => true,
+        ),
+        
+        //Configure Authmanager to use database
+        'authManager'=>array(
+            'class'=>'CDbAuthManager',
+            'connectionID'=>'db',
+            'defaultRoles'=>array('authenticated', 'guest'),
         ),
         
         'errorHandler'=>array(
@@ -66,14 +77,21 @@ return array(
             'routes'=>array(
                 array(
                     'class'=>'CFileLogRoute',
-                    'levels'=>'error, warning',
+                    'levels'=>'trace, info, error, warning, vardump',
+                ),
+                array(
+                    'class'=>'CProfileLogRoute',
+                    'levels'=>'profile',
+                    'enabled'=>true,
                 ),
                 // uncomment the following to show log messages on web pages
-                /*
                 array(
-                    'class'=>'CWebLogRoute',
+                    'class' => 'CWebLogRoute',
+                    'enabled' => YII_DEBUG,
+                    'levels' => 'error, warning, trace, notice',
+                    'categories' => 'application, vardump',
+                    'showInFireBug' => false,
                 ),
-                */
             ),
         ),
         //'clientScript'=>array(

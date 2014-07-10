@@ -3,7 +3,6 @@ body
     margin: 0;
     padding: 0;
     color: white;
-    background: #383838;
 }
 
 img{
@@ -54,12 +53,12 @@ overflow-y: hidden;
     width: 50%;
 }
 
-.sets{
+.games{
     float:left;
     width:100%;
 }
 
-.set{
+.game{
     background: rgba(255,255,255,0.05);
     padding: 15px;
     border-style:solid;

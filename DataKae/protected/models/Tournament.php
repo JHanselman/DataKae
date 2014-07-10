@@ -42,11 +42,11 @@ class Tournament extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('tournamentName, locationId, startDate, endDate, rulesetId', 'required'),
+            array('tournamentName, locationId, startDate, endDate'/*, rulesetId'*/, 'required'),
             array('tournamentName', 'length', 'max'=>128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('tournamentName, locationId, startDate, endDate, rulesetId', 'safe', 'on'=>'search'),
+            array('tournamentName, locationId, startDate, endDate, rulesetId, userId', 'safe', 'on'=>'search'),
         );
     }
 
@@ -74,7 +74,7 @@ class Tournament extends CActiveRecord
         // should not be searched.
 
         $criteria=new CDbCriteria;
-
+Yii::trace($this->tournamentName);
         $criteria->compare('tournamentId',$this->tournamentId);
         $criteria->compare('"tournamentName"',$this->tournamentName, true);
         $criteria->compare('locationId',$this->locationId);
@@ -92,4 +92,62 @@ class Tournament extends CActiveRecord
       ),
         ));
     }
+    
+    public function findByOrganizer($userId)
+    {
+        // Warning: Please modify the following code to remove attributes that
+        // should not be searched.
+        
+        $criteria2=new CDbCriteria;
+
+        Yii::trace($this->tournamentName);
+        
+        $criteria2->join='JOIN "Tournament_Organizers" ds on ds."tournamentId" = t."tournamentId"';
+        $criteria2->condition = 'ds."userId"=:userId';
+        $criteria2->params = array(':userId' => $userId);
+        
+       // $criteria2->compare('tournamentId',$this->tournamentId);
+       $criteria2->compare('"tournamentName"',$this->tournamentName, true);
+       // $criteria2->compare('locationId',$this->locationId);
+       // $criteria2->compare('"startDate"',$this->startDate);
+       // $criteria2->compare('endDate',$this->endDate);
+       // $criteria2->compare('rulesetId',$this->rulesetId);
+        
+        return new CActiveDataProvider($this, array(
+                    'criteria'=>$criteria2,
+                    'sort'=>array(
+                    'defaultOrder'=>'"startDate" DESC',
+                ),
+                'pagination'=>array(
+                    'pageSize'=>20
+              ),
+                ));
+        
+    }
+    
+    public function saveWithOrganizer()
+    {
+        $connection = Yii::app()->db;
+        
+        $transaction=$connection->beginTransaction();
+        try
+        {
+            $this->save();
+            
+            $TO=new TournamentOrganizers();
+            $TO->userId=Yii::app()->user->getId();
+            $TO->tournamentId=$this->tournamentId;
+            $TO->save();
+            
+            $transaction->commit();
+            return true;
+        }
+        catch(Exception $e) // an exception is raised if a query fails
+        {
+            $transaction->rollback();
+            echo Yii::trace(CVarDumper::dumpAsString($this->tournamentId),'vardump');
+        }
+    }
+    
+
 }

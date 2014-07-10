@@ -17,6 +17,10 @@ class RegistrationForm extends CFormModel
     public $emailAddress;
     public $verifyCode;
     
+    public $playerName;
+    public $playerLastName;
+    public $playerNickname;
+    
     private $_identity;
 
     const WEAK = 0;
@@ -47,7 +51,7 @@ class RegistrationForm extends CFormModel
     {
         return array(
             // username and password are required
-            array('username, password, locationId, emailAddress', 'safe'),
+            array('username, password, locationId, emailAddress, playerName, playerLastName, playerNickname', 'safe'),
             array('username, password, emailAddress', 'required'),
             array('password', 'passwordStrength', 'strength'=>self::STRONG),
             //array('emailAddress', 'email'),
@@ -61,19 +65,36 @@ class RegistrationForm extends CFormModel
      */
     public function register()
     {
-        $newUser=new User;
-        $newUser->userName = $this->username;
-        $newUser->passwordHash=$this->create_hash($this->password);
-        $newUser->locationId=$this->locationId;
-        $newUser->emailAddress=$this->emailAddress;
-        if ($newUser->save())
+        $connection = Yii::app()->db;
+        
+        $transaction=$connection->beginTransaction();
+        try
         {
+            $newPlayer=new Player;
+            $newPlayer->playerName = $this->playerName;
+            $newPlayer->playerLastName = $this->playerLastName;
+            $newPlayer->playerNickname = $this->playerNickname;
+            $newPlayer->locationId=$this->locationId;
+            
+            $newPlayer->save();
+            
+            
+            $newUser=new User;
+            $newUser->userName = $this->username;
+            $newUser->passwordHash=$this->create_hash($this->password);
+            $newUser->playerId=$newPlayer->playerId;
+            $newUser->emailAddress=$this->emailAddress;
+            
+            $newUser->save();
+            
+            $transaction->commit();
             return true;
         }
-        else
+        catch(Exception $e) // an exception is raised if a query fails
         {
-            
-        };
+            $transaction->rollback();
+            return false;
+        }
     }
     
     public function passwordStrength($attribute,$params)

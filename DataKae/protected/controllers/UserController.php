@@ -6,7 +6,7 @@ class UserController extends Controller
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
-    public $layout='//layouts/column2';
+    public $layout='//layouts/main';
 
     /**
      * @return array action filters
@@ -32,12 +32,16 @@ class UserController extends Controller
                 'users'=>array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('create','update'),
+                'actions'=>array('create'),
                 'users'=>array('@'),
+            ),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions'=>array('update'),
+                'roles'=>array('authenticated'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions'=>array('admin','delete'),
-                'users'=>array('admin'),
+                'roles'=>array('admin'),
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
@@ -71,7 +75,7 @@ class UserController extends Controller
         {
             $model->attributes=$_POST['User'];
             if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
+                $this->redirect(array('view','id'=>$model->userId));
         }
 
         $this->render('create',array(
@@ -87,20 +91,29 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model=$this->loadModel($id);
-
+        
+        // set the parameters for the bizRule
+        $params = array('User'=>$model);
+    
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
-
+        if (!Yii::app()->user->checkAccess('updateSelf',$params) &&
+                !Yii::app()->user->checkAccess('admin'))
+            {
+                throw new CHttpException(403, 'You are not authorized to perform this action');
+            }
+            
         if(isset($_POST['User']))
-        {
-            $model->attributes=$_POST['User'];
-            if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
-        }
+            {
+                $model->attributes=$_POST['User'];
+                if($model->save())
+                    $this->redirect(array('view','id'=>$model->userId));
+            }
 
-        $this->render('update',array(
-            'model'=>$model,
-        ));
+            $this->render('update',array(
+                'model'=>$model,
+            ));
+            
     }
 
     /**
@@ -122,7 +135,14 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider=new CActiveDataProvider('User');
+        $criteria=new CDbCriteria();
+        $criteria->select='"userId", "userName","emailAddress"';
+        $dataProvider=new CActiveDataProvider('User',
+            array(
+            'criteria'=> $criteria
+            ));
+        
+        
         $this->render('index',array(
             'dataProvider'=>$dataProvider,
         ));

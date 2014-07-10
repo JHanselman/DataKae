@@ -26,7 +26,7 @@ $stages=Stages::model()->findAll($stageCriteria);
                         'id'=>'SubmitResultsForm_player_1',
                         'name'=>'player_1',
                         'value'=>'',
-                        'source'=>$this->createUrl('User/autocomplete'),
+                        'source'=>$this->createUrl('Player/autocomplete'),
                         // additional javascript options for the autocomplete plugin
                         'options'=>array(
                                 'showAnim'=>'fold',
@@ -44,7 +44,7 @@ $stages=Stages::model()->findAll($stageCriteria);
                         'id'=>'SubmitResultsForm_player_2',
                         'name'=>'player_2',
                         'value'=>'',
-                        'source'=>$this->createUrl('User/autocomplete'),
+                        'source'=>$this->createUrl('Player/autocomplete'),
                         // additional javascript options for the autocomplete plugin
                         'options'=>array(
                                 'showAnim'=>'fold',
@@ -54,10 +54,10 @@ $stages=Stages::model()->findAll($stageCriteria);
             <div class="rowfiller"> &nbsp
             </div>
         </div>
-        <div class="sets">
-        <?php for($i=0; $i<count($sets); $i++):?>
-                <?php $this->renderPartial('_setResults', array(
-                    'model' => $sets[$i],
+        <div class="games">
+        <?php for($i=0; $i<count($games); $i++):?>
+                <?php $this->renderPartial('_gameResults', array(
+                    'model' => $games[$i],
                     'index' => $i,
                     'characters' => $characters,
                     'stages' => $stages
@@ -66,20 +66,20 @@ $stages=Stages::model()->findAll($stageCriteria);
         </div>
         
         <div class="row buttons">
-            <?php echo CHtml::button('Add set',
-                array('class' => 'sets-add'))?>
+            <?php echo CHtml::button('Add game',
+                array('class' => 'games-add'))?>
       
             <?php Yii::app()->clientScript->registerCoreScript("jquery")?>
             <script>
-                $(".sets-add").click(function(){
+                $(".games-add").click(function(){
                 $.ajax({
                     success: function(html){
-                        $(".sets").append(html);
+                        $(".games").append(html);
                     },
                     type: 'get',
-                    url: '<?php echo $this->createUrl('addset')?>',
+                    url: '<?php echo $this->createUrl('addgame')?>',
                     data: {
-                        index: $(".set").size()
+                        index: $(".games").size()
                     },
                     cache: false,
                         dataType: 'html'
@@ -95,9 +95,9 @@ $stages=Stages::model()->findAll($stageCriteria);
 function changePic(picture, pictureId, extension)
 {
     if (picture.val()!='')
-        document.getElementById(pictureId).src="css/images/"+picture.text()+"."+extension;
+        document.getElementById(pictureId).src="../../../css/images/"+picture.text()+"."+extension;
     else
-        document.getElementById(pictureId).src="css/images/none."+extension;
+        document.getElementById(pictureId).src="../../../css/images/none."+extension;
 }
 </script>
 </div><!-- form -->

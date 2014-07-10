@@ -9,7 +9,8 @@ class SubmitResultsForm extends CFormModel
 {
     public $player_1;
     public $player_2;
-    public $sets;
+    public $tournamentId;
+    public $games;
     
     private $_identity;
 
@@ -40,8 +41,8 @@ class SubmitResultsForm extends CFormModel
      */
     public function submitResults()
     {
-        $player1=User::model()->find('"userName"=:userName', array(':userName'=>$this->player_1));
-        $player2=User::model()->find('"userName"=:userName', array(':userName'=>$this->player_2));
+        $player1=Player::model()->find('"playerNickname"=:playerNickname', array(':playerNickname'=>$this->player_1));
+        $player2=Player::model()->find('"playerNickname"=:playerNickname', array(':playerNickname'=>$this->player_2));
         
         $connection = Yii::app()->db;
         
@@ -49,45 +50,24 @@ class SubmitResultsForm extends CFormModel
         try
         {
             $newMatch=new Match;
-            $newMatch->matchDate = date('Y-m-d H:i:s');
-            $newMatch->matchType = '1v1';
-            $newMatch->rulesetId = 1;
-            $newMatch->save();
+            $newMatch->player1=$player1->playerId;
+            $newMatch->player2=$player2->playerId;
+            $newMatch->winner1=1;
+            $newMatch->tournamentId=$this->tournamentId;
             
-            foreach($this->sets as $setData)
+            $newMatch->save();
+            foreach($this->games as $gameData)
             {
-                $set=new Set;
-                $set->stageId=$setData->stageId;
-                $set->matchId=$newMatch->matchId;
-                $set->save();
+                $game=new Game;
                 
-                $placing1;
-                $placing2;
+                $game->stageId=$gameData->stageId;
+                $game->gameNumber=$gameData->gameNumber;
+                $game->winner1= $gameData->winner;
+                $game->characterPlayer1=$gameData->character_1;
+                $game->characterPlayer2=$gameData->character_2;
+                $game->matchId=$newMatch->matchId;
                 
-                if ($setData->winner==1)
-                {
-                    $placing1=1;
-                    $placing2=2;
-                }
-                else
-                {
-                    $placing1=2;
-                    $placing2=1;
-                }
-                    
-                $pp1=new PlayerSetParticipation;
-                $pp1->userId=$player1->userId;
-                $pp1->characterId=$setData->character_1;
-                $pp1->placing=$placing1;
-                $pp1->setId=$set->setId;
-                $pp1->save();
-                
-                $pp2=new PlayerSetParticipation;
-                $pp2->userId=$player2->userId;
-                $pp2->characterId=$setData->character_2;
-                $pp2->placing=$placing2;
-                $pp2->setId=$set->setId;
-                $pp2->save();
+                $game->save();
             }
             
             $transaction->commit();
@@ -95,6 +75,8 @@ class SubmitResultsForm extends CFormModel
         }
         catch(Exception $e) // an exception is raised if a query fails
         {
+        
+            echo Yii::trace(CVarDumper::dumpAsString($e),'vardump');
             $transaction->rollback();
         }
         

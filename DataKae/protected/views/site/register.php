@@ -38,6 +38,24 @@ $this->breadcrumbs=array(
     </div>
     
     <div class="row">
+        <?php echo $form->labelEx($model,'playerName'); ?>
+        <?php echo $form->textField($model,'playerName'); ?>
+        <?php echo $form->error($model,'playerName'); ?>
+    </div>
+        
+    <div class="row">
+        <?php echo $form->labelEx($model,'playerLastName'); ?>
+        <?php echo $form->textField($model,'playerLastName'); ?>
+        <?php echo $form->error($model,'playerLastName'); ?>
+    </div>
+    
+    <div class="row">
+        <?php echo $form->labelEx($model,'playerNickname'); ?>
+        <?php echo $form->textField($model,'playerNickname'); ?>
+        <?php echo $form->error($model,'playerNickname'); ?>
+    </div>
+    
+    <div class="row">
         <?php echo $form->labelEx($model,'password'); ?>
         <?php echo $form->passwordField($model,'password'); ?>
         <?php echo $form->error($model,'password'); ?>

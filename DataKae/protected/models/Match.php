@@ -56,7 +56,7 @@ class Match extends CActiveRecord
             //array('userName, passwordHash, emailAddress', 'length', 'max'=>128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            //array('id, userName, passwordHash, emailAddress', 'safe', 'on'=>'search'),
+            array('matchId, tournamentId, player1, player2, winner1', 'safe', 'on'=>'search'),
         );
     }
 
@@ -86,23 +86,24 @@ class Match extends CActiveRecord
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function search()
+    public function search($tournamentId=false)
     {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('matchId',$this->matchId);
-        $criteria->compare('roundId',$this->roundId,true);
-        $criteria->compare('previousMatch',$this->previousMatch,true);
+        $criteria->compare('"matchId"',$this->matchId);
+        $criteria->compare('"roundId"',$this->roundId);        
+        $criteria->compare('"tournamentId"',$this->tournamentId);
+        $criteria->compare('"previousMatch"',$this->previousMatch,true);
         $criteria->compare('nextMatch',$this->nextMatch,true);
-        $criteria->compare('player1',$this->player1,true);
-        $criteria->compare('player2',$this->player2,true);
-        $criteria->compare('player3',$this->player3,true);
-        $criteria->compare('player4',$this->player4,true);
-        $criteria->compare('winner1',$this->winner1,true);
-        $criteria->compare('winner2',$this->winner2,true);
+        $criteria->compare('"player1"',$this->player1);
+        $criteria->compare('"player2"',$this->player2);
+        $criteria->compare('"player3"',$this->player3,true);
+        $criteria->compare('"player4"',$this->player4,true);
+        $criteria->compare('"winner1"',$this->winner1);
+        $criteria->compare('"winner2"',$this->winner2,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,

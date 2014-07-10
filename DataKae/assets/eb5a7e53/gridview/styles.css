@@ -10,7 +10,7 @@
 
 .grid-view table.items
 {
-    background: white;
+    background: #111;
     border-collapse: collapse;
     width: 100%;
     border: 1px #D0E3EF solid;

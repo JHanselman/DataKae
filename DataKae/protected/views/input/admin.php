@@ -3,6 +3,8 @@
 
 $this->pageTitle=Yii::app()->name;
 ?>
+
+<h1>Tourneys</h1>
 <div id='TourneyGrid'>
 <?php
 
@@ -12,13 +14,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'columns' => array(
         array(
             'name' => 'tournamentName',
-            'type' => 'text',
+            'type' => 'raw',
             'value' => 'CHtml::encode($data->tournamentName)'
         ),
         array(
             'name' => 'startDate',
             'type' => 'text',
-            'value'=> $model->startDate
+            'value'=> $model->startDate,
+            'filter'=> false
         )
     ),
     'selectionChanged'=>'function(id){changeTourneyView($.fn.yiiGridView.getSelection(id));}'
@@ -30,7 +33,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <div id='TourneyView'>
 <?php $this->renderPartial('tourneyview', null)?>
 </div>
-<?php echo CHtml::button('Delete', array('submit'=>array('delete','id'=>'js: 9;'),'confirm'=>'Are you sure you want to delete this item?'));?>
+
 </div>
 <?php Yii::app()->clientScript->registerCoreScript("jquery")?>
             <script>

@@ -41,7 +41,7 @@ class User extends CActiveRecord
             array('userName, passwordHash, emailAddress', 'length', 'max'=>128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, userName, passwordHash, emailAddress', 'safe', 'on'=>'search'),
+            array('id, userName, emailAddress', 'safe', 'on'=>'search'),
         );
     }
 
@@ -54,7 +54,8 @@ class User extends CActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'matchData'=>array(self::HAS_MANY, 'MatchData', 'userId'),
-            'glickoData'=>array(self::HAS_ONE, 'glickoData', 'userId','condition'=>'"glickoData"."matchType"=\'1v1\'')
+            'glickoData'=>array(self::HAS_ONE, 'glickoData', 'userId','condition'=>'"glickoData"."matchType"=\'1v1\''),
+            'player' => array(self::HAS_ONE, 'Player', 'playerId')
         );
     }
 
@@ -64,11 +65,8 @@ class User extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'userId' => 'ID',
             'userName' => 'Username',
-            'passwordHash' => 'PasswordHash',
-            'emailAdress' => 'Email',
-            'region' => 'Region',
+            'emailAdress' => 'Email'
         );
     }
 
@@ -83,10 +81,9 @@ class User extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('userId',$this->userId);
-        $criteria->compare('userName',$this->userName,true);
-        $criteria->compare('passwordHash',$this->passwordHash,true);
-        $criteria->compare('emailAdress',$this->emailAddress,true);
+        $criteria->compare('"userId"',$this->userId);
+        $criteria->compare('"userName"',$this->userName,true);
+        $criteria->compare('"emailAdress"',$this->emailAddress,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
