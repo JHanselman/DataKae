@@ -94,18 +94,27 @@ class Player extends CActiveRecord
         ));
     }
     
-        public function tourneyParticipants($tournamentId)
+    public function tourneyParticipants($tournamentId, $not)
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
-   // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
+        // This is probably ugly as hell.
         
         $criteria2=new CDbCriteria;
         
-        $criteria2->join='JOIN "Tournament_Players" ds on ds."playerId" = t."playerId"';
-        $criteria2->condition = 'ds."tournamentId"=:tournamentId';
+        if ($not)
+        {
+            $criteria2->join='LEFT OUTER JOIN "Tournament_Players" ds on ds."playerId" = t."playerId"';
+            $criteria2->condition = 'ds."tournamentId"=:tournamentId';
+        }
+        else
+        {
+           $criteria2->condition = 't."playerId" NOT IN 
+        (SELECT "Players"."playerId"
+        FROM "Players" LEFT OUTER JOIN "Tournament_Players"
+        ON "Players"."playerId" = "Tournament_Players"."playerId"
+        WHERE "Tournament_Players"."tournamentId" = :tournamentId) 
+        ';
+        }
+        
         $criteria2->params = array(':tournamentId' => $tournamentId);
         
         $criteria2->compare('"playerId"',$this->playerId);

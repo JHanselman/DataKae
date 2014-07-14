@@ -22,7 +22,7 @@ class InputController extends Controller
             'users'=>array('*'),
             ),
             array('allow', // allow admin user to perform 'create', 'update' and 'delete' actions
-                'actions'=>array('create','update','delete','addplayertotourney'),
+                'actions'=>array('create','update','delete','addplayertotourney','removeplayerfromtourney'),
                 'roles'=>array('authenticated'),
             ),
             array('deny',  // deny all users
@@ -84,12 +84,33 @@ class InputController extends Controller
         
         
         
+        if(isset($_POST["TournamentPlayer"][0]))
+        {
+            $model=new TournamentPlayers;
+            
+            Yii::trace(CVarDumper::dumpAsString('hi','vardump'));
+            $model->playerId=$_POST["TournamentPlayer"][0];
+            $model->tournamentId=2;
+            if($model->save())
+                $this->redirect(array('view','id'=>$id));
+        }
+        
+        //Yii::trace(CVarDumper::dumpAsString($_POST['data']),'vardump');
         $params =array(
             'model'=>$this->loadModel($id), 'playerModel' => $playerModel
         );
         $this->render('addptotourney', $params);
         
             
+    }
+    
+    public function actionRemovePlayerFromTourney($id)
+    {
+        if(isset($_POST["TournamentPlayer"][0]))
+        {
+            $model = TournamentPlayers::model();            
+            $model->deleteIt($id, $_POST["TournamentPlayer"][0]);
+        }
     }
     
     public function actionCreateTournamentPlayer()

@@ -1,18 +1,10 @@
 <?php
 /* @var $this InputController */
 /* @var $model Tournament */
-
+Yii::app()->clientScript->registerCssFile("/application/DataKae/css/playerForm.css");
 $this->breadcrumbs=array(
-    'Users'=>array('index'),
+    'View Tournament'=>array('view','id'=>$model->tournamentId),
     $model->tournamentId,
-);
-
-$this->menu=array(
-    array('label'=>'List Tournaments', 'url'=>array('index')),
-    array('label'=>'Create Tournament', 'url'=>array('create')),
-    array('label'=>'Update Tournament', 'url'=>array('update', 'id'=>$model->tournamentId)),
-    array('label'=>'Delete Tournament', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->tournamentId),'confirm'=>'Are you sure you want to delete this item?')),
-    array('label'=>'Manage Tournament', 'url'=>array('admin')),
 );
 ?>
 
@@ -30,22 +22,59 @@ $this->menu=array(
 )); 
 
 ?>
-
-
+<div class="hubbo" id="container" style="playerForm.css">
+<div class="griddy">
 <?php $this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'participant-grid',
-    'dataProvider'=>$playerModel->search(),
+    'dataProvider'=>$playerModel->tourneyParticipants($model->tournamentId, true),
     'filter'=>$playerModel,
     'columns'=>array(
         'playerNickname',
-        array(
-            'class'=>'CButtonColumn',
-            'template'=>'{addPlayer}',
-            'buttons'=>array(
-                'addPlayer' => array(
-                    'label'=>'Add Player',
-                    //'url'=>'Yii::app()->createUrl("input/createTournamentPlayer", array("id"=>$model->tournamentId))',
-                ),
-            ),
         ),
-))); ?>
+        'selectionChanged'=>'function(id){playerManager.selectedParticipant=$.fn.yiiGridView.getSelection(id);}'
+)); 
+
+?>
+</div>
+<div class="griddy">
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+    'id'=>'possibleplayer-grid',
+    'dataProvider'=>$playerModel->tourneyParticipants($model->tournamentId, false),
+    'filter'=>$playerModel,
+    'columns'=>array(
+        'playerNickname',
+        ),
+    'selectionChanged'=>'function(id){playerManager.selectedPlayer=$.fn.yiiGridView.getSelection(id);}'
+)); 
+?>
+
+</div>
+</div>
+
+<?php
+echo CHtml::ajaxSubmitButton('Add selected player',Yii::app()->createUrl('input/addPlayerToTourney/2'),
+                    array(
+                        'type'=>'POST',
+                        'data'=> 'js:{"TournamentPlayer": playerManager.selectedPlayer}',
+                        'datatype'=> 'text',                      
+                        'success'=>'function(data){$.fn.yiiGridView.update(\'possibleplayer-grid\');$.fn.yiiGridView.update(\'participant-grid\');}'      
+                    ));
+?>
+
+<?php
+echo CHtml::ajaxSubmitButton('Remove selected player',Yii::app()->createUrl('input/removePlayerFromTourney/2'),
+                    array(
+                        'type'=>'POST',
+                        'data'=> 'js:{"TournamentPlayer": playerManager.selectedParticipant}',
+                        'datatype'=> 'text',                      
+                        'success'=>'function(data){$.fn.yiiGridView.update(\'possibleplayer-grid\');$.fn.yiiGridView.update(\'participant-grid\');}'      
+                    ));
+?>
+         
+<script language = 'javascript'>
+playerManager = function ()
+{
+   var selectedPlayer;
+   var selectedParticipant;
+}
+</script>

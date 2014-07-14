@@ -1,0 +1,10 @@
+
+.griddy{
+    float: left;
+    width: 50%;
+    text-align: center;
+}
+
+.hubbo{
+    overflow: auto;
+}

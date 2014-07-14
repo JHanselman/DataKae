@@ -34,7 +34,7 @@ $this->menu=array(
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'participant-grid',
-    'dataProvider'=>$playerModel->tourneyParticipants($model->tournamentId),
+    'dataProvider'=>$playerModel->tourneyParticipants($model->tournamentId, true),
     'filter'=>$playerModel,
     'columns'=>array(
         'playerNickname',
@@ -77,6 +77,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     )
 ); 
 echo CHtml::button('Add Match', array('submit'=>array('matchresults/submitresults','id'=>$model->tournamentId)));
+
 ?>
 
 

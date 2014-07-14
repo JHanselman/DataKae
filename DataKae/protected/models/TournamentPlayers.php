@@ -30,12 +30,17 @@ class TournamentPlayers extends CActiveRecord
         );
     }
     
+   public function init()
+   {
+        $this->getMetaData()->tableSchema->primaryKey = array('tournamentId','playerId');
+   }
+  
     /**
      * @return string the associated database table name
      */
     public function tableName()
     {
-        return 'TournamentPlayers';
+        return 'Tournament_Players';
     }
 
     /**
@@ -54,6 +59,25 @@ class TournamentPlayers extends CActiveRecord
         );
     }
 
+public function primaryKey(){
+            return array('space_id', 'day');
+        }
+    
+    public function deleteIt($tournamentId, $playerId)
+    {
+        Yii::app()->db->createCommand()
+        ->delete('Tournament_Players','"tournamentId"=:tournamentId AND "playerId"=:playerId', array(':tournamentId' => $tournamentId,':playerId' => $playerId));
+    }
+    
+    
+    public function loadModel(array $id)
+        {
+                $model=TournamentPlayers::model()->findByPk(array('tournamentId' => 2, 'playerId' => 2));
+                if($model===null)
+                        throw new CHttpException(404,'The requested page does not exist.');
+                return $model;
+        }
+    
     /**
      * @return array relational rules.
      */

@@ -1,5 +1,15 @@
 BEGIN TRANSACTION;
 
+CREATE TABLE "AuthItem"
+(
+  name character varying(64) NOT NULL,
+  type integer NOT NULL,
+  description text,
+  bizrule text,
+  data text,
+  CONSTRAINT "AuthItem_pkey" PRIMARY KEY (name)
+);
+
 CREATE TABLE "AuthAssignment"
 (
   itemname character varying(64) NOT NULL,
@@ -10,16 +20,6 @@ CREATE TABLE "AuthAssignment"
   CONSTRAINT "AuthAssignment_itemname_fkey" FOREIGN KEY (itemname)
       REFERENCES "AuthItem" (name) MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE "AuthItem"
-(
-  name character varying(64) NOT NULL,
-  type integer NOT NULL,
-  description text,
-  bizrule text,
-  data text,
-  CONSTRAINT "AuthItem_pkey" PRIMARY KEY (name)
 );
 
 CREATE TABLE "AuthItemChild"
@@ -190,8 +190,8 @@ CREATE TABLE "Tournament_Players"
   "placing" character varying,
   
   PRIMARY KEY ("tournamentId", "playerId"),
-  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments",
-  FOREIGN KEY ("playerId") REFERENCES "Players"
+  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments" ON DELETE CASCADE, 
+  FOREIGN KEY ("playerId") REFERENCES "Players" ON DELETE CASCADE
 );
 
 CREATE TABLE "Tournament_Organizers"
@@ -201,8 +201,8 @@ CREATE TABLE "Tournament_Organizers"
   "job" character varying,
   
   PRIMARY KEY ("tournamentId", "userId"),
-  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments",
-  FOREIGN KEY ("userId") REFERENCES "Users"
+  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments" ON DELETE CASCADE,
+  FOREIGN KEY ("userId") REFERENCES "Users" ON DELETE CASCADE
 );
 
 CREATE TABLE "Tournament_Stages"
@@ -212,8 +212,8 @@ CREATE TABLE "Tournament_Stages"
   "stageStatus" integer NOT NULL DEFAULT 2,
   
   PRIMARY KEY ("tournamentId", "stageId"),
-  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments",
-  FOREIGN KEY ("stageId") REFERENCES "Stages"
+  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments" ON DELETE CASCADE,
+  FOREIGN KEY ("stageId") REFERENCES "Stages" ON DELETE CASCADE
 );
 
 CREATE TABLE "Tournament_Characters"
@@ -223,8 +223,8 @@ CREATE TABLE "Tournament_Characters"
   "characterStatus" integer NOT NULL DEFAULT 2,
   
   PRIMARY KEY ("tournamentId", "characterId"),
-  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments",
-  FOREIGN KEY ("characterId") REFERENCES "Characters"
+  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments" ON DELETE CASCADE,
+  FOREIGN KEY ("characterId") REFERENCES "Characters" ON DELETE CASCADE
 );
 
 CREATE TABLE "Tournament_Items"
@@ -234,8 +234,8 @@ CREATE TABLE "Tournament_Items"
   "itemStatus" integer NOT NULL DEFAULT 0,
   
   PRIMARY KEY ("tournamentId", "itemId"),
-  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments",
-  FOREIGN KEY ("itemId") REFERENCES "Items"
+  FOREIGN KEY ("tournamentId") REFERENCES "Tournaments" ON DELETE CASCADE,
+  FOREIGN KEY ("itemId") REFERENCES "Items" ON DELETE CASCADE
 );
 
 CREATE TABLE "Matches"
