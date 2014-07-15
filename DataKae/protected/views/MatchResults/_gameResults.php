@@ -1,6 +1,6 @@
 <!-- A block of set results to submit -->
 
-<div class="set">
+<div class="game">
     <div class="players">
         <div class="player">
                 <?php echo CHtml::activeLabel($model, "[$index]characterName")?>

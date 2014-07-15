@@ -55,14 +55,14 @@ $stages=Stages::model()->findAll($stageCriteria);
             </div>
         </div>
         <div class="games">
-        <?php for($i=0; $i<count($games); $i++):?>
-                <?php $this->renderPartial('_gameResults', array(
+        <?php for($i=0; $i<count($games); $i++):
+                 $this->renderPartial('_gameResults', array(
                     'model' => $games[$i],
                     'index' => $i,
                     'characters' => $characters,
                     'stages' => $stages
-                ))?>
-        <?php endfor ?>
+                ));
+        endfor ?>
         </div>
         
         <div class="row buttons">
@@ -79,7 +79,7 @@ $stages=Stages::model()->findAll($stageCriteria);
                     type: 'get',
                     url: '<?php echo $this->createUrl('addgame')?>',
                     data: {
-                        index: $(".games").size()
+                        index: $('.game').length
                     },
                     cache: false,
                         dataType: 'html'
