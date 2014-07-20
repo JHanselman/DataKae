@@ -23,7 +23,7 @@ class MatchResultsController extends Controller
             }
             $matchForm->games=$gameForm;
             $matchForm->tournamentId=$id;
-            //Let the form check if everything's correct and submit the results if that's the case.
+            //Let the form check if everything is correct and submit the results if that's the case.
             $matchForm->submitResults();
             
             //change this
@@ -31,7 +31,10 @@ class MatchResultsController extends Controller
         }
         //Otherwise you return the normal page with only one set added to the form and you render the page.
         else
-            $gameForm[] = new SubmitGamesForm;
+            for ($i=0; $i< 3;$i++)
+            {
+                $gameForm[] = new SubmitGamesForm;
+            }
         $this->render('submitresults', array('match' => $matchForm,
                 'games' => $gameForm,
         ));

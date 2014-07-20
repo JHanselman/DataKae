@@ -7,12 +7,12 @@
  */
 class SubmitGamesForm extends CFormModel
 {
+    public $gameId;
     public $character_1;
     public $character_2;
-    public $stageNumber;
     public $gameNumber;
     public $stageId;
-    public $winner;
+    public $winner1;
     
     private $_identity;
 
@@ -24,7 +24,7 @@ class SubmitGamesForm extends CFormModel
     public function rules()
     {
         return array(
-            array('character_1, character_2, stageId, winner', 'required')
+            array('character_1, character_2, stageId, winner1', 'required')
         );
     }
 

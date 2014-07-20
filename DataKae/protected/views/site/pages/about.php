@@ -11,6 +11,48 @@ $this->breadcrumbs=array(
 <h1>About</h1>
 
 <p>This website was blablabla</p>
+
+<?php 
+$charCriteria = new CDbCriteria(array('select'=>('"characterId","characterName"'),'order'=>'"characterName" ASC'));
+$characters=Characters::model()->findAll($charCriteria);
+$character=Characters::model();
+
+$haha=array();
+
+ foreach($characters as $char) 
+    {
+        if(isset($char->characterName)) 
+            $haha[$char->characterId]=$char->characterName;
+    }
+
+//$this->widget('application.components.CharacterSelectScreen', array('characters'=> $characters)); ?>
+
+<div class="form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+    'id'=>'Tournament-form',
+    'enableAjaxValidation'=>false,
+)); ?>
+
+
+<div class="row">
+        <?php echo $form->labelEx($character, 'character'); ?>
+ 
+            <div class="compactRadioGroup">
+            <?php
+                echo $form->radioButtonList($character, 'characterName', $haha,
+                array('template'=>'<img src="../../css/images/'.'{label}'.'.gif" />')
+                //<img src="../../css/images/none.gif" />')
+                );
+            ?>
+            </div>
+    </div>
+
+
+<?php $this->endWidget(); ?>
+
+
+
 <?php
 
 /*$auth=Yii::app()->authManager;

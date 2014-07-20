@@ -94,14 +94,14 @@ if ($data!=null)
 </table>
 
 <?php
-if (!Yii::app()->user->isGuest)
+if (Yii::app()->user->checkAccess('TO')||Yii::app()->user->checkAccess('admin'))
     {
         echo CHtml::button('Create', array('submit'=>array('create')));
     }
 if ($data!=null)
 {
-    echo CHtml::button('View', array('submit'=>array('view','id'=>$data->tournamentId)));
-    if (Yii::app()->user->checkAccess('deleteOwnTourney',array('Tournament'=>$data))||Yii::app()->user->checkAccess('admin'))
+    echo CHtml::link('View', array('view','id'=>$data->tournamentId));
+    if (Yii::app()->user->checkAccess('editOwnTourney',array('Tournament'=>$data))||Yii::app()->user->checkAccess('admin'))
     {
         echo CHtml::button('Update', array('submit'=>array('update','id'=>$data->tournamentId)));
         echo CHtml::button('Delete', array('submit'=>array('delete','id'=>$data->tournamentId),'confirm'=>'Are you sure you want to delete this item?'));

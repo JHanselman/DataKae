@@ -52,7 +52,7 @@ $this->breadcrumbs=array(
 </div>
 
 <?php
-echo CHtml::ajaxSubmitButton('Add selected player',Yii::app()->createUrl('input/addPlayerToTourney/2'),
+echo CHtml::ajaxSubmitButton('Add selected player',Yii::app()->createUrl('input/addPlayerToTourney',array('id' => $model->tournamentId)),
                     array(
                         'type'=>'POST',
                         'data'=> 'js:{"TournamentPlayer": playerManager.selectedPlayer}',

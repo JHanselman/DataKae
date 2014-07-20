@@ -59,9 +59,7 @@ class TournamentPlayers extends CActiveRecord
         );
     }
 
-public function primaryKey(){
-            return array('space_id', 'day');
-        }
+
     
     public function deleteIt($tournamentId, $playerId)
     {
@@ -72,7 +70,7 @@ public function primaryKey(){
     
     public function loadModel(array $id)
         {
-                $model=TournamentPlayers::model()->findByPk(array('tournamentId' => 2, 'playerId' => 2));
+                $model=TournamentPlayers::model()->findByPk(array('tournamentId' => $id->tournamentId, 'playerId' => $id->playerId));
                 if($model===null)
                         throw new CHttpException(404,'The requested page does not exist.');
                 return $model;

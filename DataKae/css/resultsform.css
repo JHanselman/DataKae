@@ -84,6 +84,16 @@ overflow-y: hidden;
     text-align: center;
 }
 
+.BOlist{
+float:left;
+width: 50%;
+height: 100%;
+}
+
+.BestOf {
+    float: left;
+}
+
 .player{
     padding-top:20px;
     float: left;

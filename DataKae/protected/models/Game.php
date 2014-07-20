@@ -45,7 +45,6 @@ class Game extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            //array('userName, passwordHash, emailAddress', 'required'),
             //array('userName, passwordHash, emailAddress', 'length', 'max'=>128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
@@ -61,7 +60,6 @@ class Game extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'participants'=>array(self::HAS_ONE, 'PlayerSetParticipation', 'setId')
             //'sets'=>array(self::BELONGS_TO, 'Match', 'matchId')
         );
     }
@@ -87,11 +85,21 @@ class Game extends CActiveRecord
         $criteria=new CDbCriteria;
 
         $criteria->compare('gameId',$this->id);
+        
         $criteria->compare('matchId',$this->matchId,true);
         $criteria->compare('stageId',$this->stageId,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
+    }
+    
+    public function getGamesByMatchId($matchId)
+    {
+        $criteria=new CDBCriteria;
+        $criteria->condition = '"matchId"=:matchId';
+        $criteria->params = array(':matchId' => $matchId);
+        $criteria->order = '"gameNumber" ASC';
+        return (new CActiveDataProvider($this, array('criteria'=>$criteria,)));
     }
 }

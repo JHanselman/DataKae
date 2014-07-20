@@ -18,12 +18,12 @@ class InputController extends Controller
     return array(
     
             array('allow',  // allow all users to perform 'admin','myTourneys' and 'viewTourney' actions
-            'actions'=>array('admin','view','myTourneys','viewTourney'),
+            'actions'=>array('admin','view','viewTourney'),
             'users'=>array('*'),
             ),
-            array('allow', // allow admin user to perform 'create', 'update' and 'delete' actions
-                'actions'=>array('create','update','delete','addplayertotourney','removeplayerfromtourney'),
-                'roles'=>array('authenticated'),
+            array('allow', // allow admin and TO user to perform 'create', 'update' and 'delete' actions
+                'actions'=>array('create','myTourneys','update','delete','addplayertotourney','removeplayerfromtourney'),
+                'roles'=>array('TO','admin'),
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
@@ -88,9 +88,9 @@ class InputController extends Controller
         {
             $model=new TournamentPlayers;
             
-            Yii::trace(CVarDumper::dumpAsString('hi','vardump'));
+            Yii::trace(CVarDumper::dumpAsString($id,'vardump'));
             $model->playerId=$_POST["TournamentPlayer"][0];
-            $model->tournamentId=2;
+            $model->tournamentId=$id;
             if($model->save())
                 $this->redirect(array('view','id'=>$id));
         }
@@ -110,18 +110,6 @@ class InputController extends Controller
         {
             $model = TournamentPlayers::model();            
             $model->deleteIt($id, $_POST["TournamentPlayer"][0]);
-        }
-    }
-    
-    public function actionCreateTournamentPlayer()
-    {
-        $model=new TournamentPlayer;
-    
-        if(isset($_POST['TournamentPlayer']))
-        {
-            $model->attributes=$_POST['TournamentPlayer'];
-            if($model->save())
-                $this->redirect(array('view','id'=>$model->tournamentId));
         }
     }
     
@@ -176,7 +164,7 @@ class InputController extends Controller
         $tourney=Tournament::model()->findByPk($id);
         $params = array('Tournament'=>$tourney);
         
-        if (!Yii::app()->user->checkAccess('deleteOwnTourney',$params) &&
+        if (!Yii::app()->user->checkAccess('editOwnTourney',$params) &&
                 !Yii::app()->user->checkAccess('admin'))
             {
                 throw new CHttpException(403, 'You are not authorized to perform this action');
@@ -192,10 +180,17 @@ class InputController extends Controller
     public function actionUpdate($id)
     {
         $model=$this->loadModel($id);
-
+        $params = array('Tournament'=>$model);
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
-
+        
+        if (!Yii::app()->user->checkAccess('editOwnTourney',$params) &&
+                !Yii::app()->user->checkAccess('admin'))
+            {
+                throw new CHttpException(403, 'You are not authorized to perform this action');
+            }
+        
+        
         if(isset($_POST['Tournament']))
         {
             $model->attributes=$_POST['Tournament'];

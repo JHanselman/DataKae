@@ -8,7 +8,6 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-    array('label'=>'Create Match', 'url'=>array('create')),
     array('label'=>'Update Match', 'url'=>array('update', 'id'=>$model->matchId)),
     array('label'=>'Delete Match', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->matchId),'confirm'=>'Are you sure you want to delete this item?')),
     array('label'=>'Manage Matches', 'url'=>array('admin')),

@@ -32,8 +32,8 @@ class MatchController extends Controller
                 'users'=>array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('create','update'),
-                'users'=>array('@'),
+                'actions'=>array('create','update', 'addgame', 'submitresults'),
+                'roles'=>array('TO','admin'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions'=>array('admin','delete'),
@@ -87,19 +87,60 @@ class MatchController extends Controller
     public function actionUpdate($id)
     {
         $model=$this->loadModel($id);
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if(isset($_POST['Match']))
+        $matchForm=new SubmitResultsForm;
+        
+        $matchForm->matchId = $model->matchId;
+        $matchForm->player_1 = Player::model()->findByPk($model->player1)->playerNickname;
+        $matchForm->player_2 = Player::model()->findByPk($model->player2)->playerNickname;
+        $matchForm->tournamentId = $model->tournamentId;
+        $matchForm->gamesNr = $model->gamesNr;
+        $matchForm->winner1 = $model->winner1;
+        
+        $gameForm=array();
+        $dataProvider = Game::model()->getGamesByMatchId($id);
+        
+        foreach($dataProvider->data as $gameData ) 
         {
-            $model->attributes=$_POST['Match'];
-            if($model->save())
-                $this->redirect(array('view','id'=>$model->matchId));
+            $game = new SubmitGamesForm;
+            $game->gameId = $gameData->gameId;
+            $game->character_1 = $gameData->characterPlayer1;
+            $game->character_2 = $gameData->characterPlayer2;
+            $game->stageId = $gameData->stageId;
+            $game->gameNumber = $gameData->gameNumber;
+            $game->winner1 = $gameData->winner1;
+            $gameForm[] = $game;
         }
-
-        $this->render('update',array(
-            'model'=>$model,
+        for ($i=count($gameForm)-1; $i< 7;$i++)
+            {
+                $gameForm[] = new SubmitGamesForm;
+            }
+        $matchForm->games = $gameForm;
+        
+        if(isset($_POST['SubmitResultsForm']))
+            {
+                $matchForm->attributes=$_POST['SubmitResultsForm'];
+                $updatedGames = array();
+                
+                for ($i=0; $i< 7;$i++)
+                {
+                    if(isset($_POST['SubmitGamesForm'][$i]))
+                    {
+                        $game = $gameForm[$i];
+                        $game->attributes = $_POST['SubmitGamesForm'][$i]; 
+                        $game->gameNumber = $i;
+                        $updatedGames[] = $game;
+                    }
+                }
+                $matchForm->games = $updatedGames;
+                
+                //Yii::trace(CVarDumper::dumpAsString($matchForm->games),'vardump');
+                if($matchForm->updateResults())
+                    $this->redirect(array('//input/view', 'id'=>$model->tournamentId));
+            }
+        //Yii::trace(serialize($gameForm[0]));
+        
+        $this->render('submitresults',array(
+            'match'=>$matchForm
         ));
     }
 
@@ -143,6 +184,56 @@ class MatchController extends Controller
         ));
     }
 
+    public function actionSubmitresults($id)
+    {
+        $matchForm=new SubmitResultsForm;
+        $matchForm->tournamentId = $id;
+        $gameForm=array();
+        
+        //If information is submitted
+        if(!empty($_POST['SubmitResultsForm']))
+        {
+            $matchForm->setAttributes($_POST['SubmitResultsForm']);
+            
+            //Set all of the data of the form
+            foreach($_POST['SubmitGamesForm'] as $i => $gameData)
+            {
+                $game = new SubmitGamesForm;
+                $game->setAttributes($gameData);
+                $game->gameNumber=$i;
+                $gameForm[] = $game;
+            }
+            $matchForm->games=$gameForm;
+            $matchForm->tournamentId=$id;
+            //Let the form check if everything's correct and submit the results if that's the case.
+            if ($matchForm->submitResults())
+                $this->redirect(array('//input/view', 'id'=>$id));
+        }
+        //Otherwise you return the normal page with only one set added to the form and you render the page.
+        else
+            for ($i=0; $i< 7;$i++)
+            {
+                $gameForm[] = new SubmitGamesForm;
+            }
+        $matchForm->games = $gameForm;
+        $this->render('submitresults', array('match' => $matchForm
+        ));
+    }
+    
+    //Adds a new set to the form and renders that part
+    public function actionAddGame($index)
+    {
+        $game = new SubmitGamesForm();
+        $charCriteria = new CDbCriteria(array('select'=>('"characterId","characterName"'),'order'=>'"characterName" ASC'));
+        $stageCriteria = new CDbCriteria(array('select'=>('"stageId","stageName"'),'order'=>'"stageName" ASC'));
+        $this->renderPartial('_gameResults', array(
+            'model' => $game,
+            'index' => $index,
+            'characters' => $characters=Characters::model()->findAll($charCriteria),
+            'stages' => $stages=Stages::model()->findAll($stageCriteria)
+        ));
+    }
+    
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
@@ -183,4 +274,7 @@ class MatchController extends Controller
         echo CJSON::encode($res);
         Yii::app()->end();
     }
+    
+
+    
 }

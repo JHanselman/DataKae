@@ -31,13 +31,9 @@ class PlayerController extends Controller
                 'actions'=>array('index','view','autocomplete'),
                 'users'=>array('*'),
             ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('create'),
-                'users'=>array('@'),
-            ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('update'),
-                'roles'=>array('authenticated'),
+            array('allow', // allow TO and admin user to perform 'create' and 'update' actions
+                'actions'=>array('create','update'),
+                'roles'=>array('TO', 'admin'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions'=>array('admin','delete'),

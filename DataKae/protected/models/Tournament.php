@@ -132,6 +132,9 @@ Yii::trace($this->tournamentName);
         $transaction=$connection->beginTransaction();
         try
         {
+            $this->createdOn = date('Y-m-d H:i:s');
+            $newMatch->changedOn = date('Y-m-d H:i:s');
+            
             $this->save();
             
             $TO=new TournamentOrganizers();

@@ -4,7 +4,7 @@
 $this->pageTitle=Yii::app()->name;
 ?>
 
-<script type="text/javascript" src="../external/raphael.js"></script>
+<script type="text/javascript" src="../../../external/raphael.js"></script>
 <script type="text/javascript" src="/application/DataKae/assets/807a2310/jquery.js"></script>
     <h1>Tourney bracket </h1>
     <div id="bracket">
@@ -110,7 +110,7 @@ $this->pageTitle=Yii::app()->name;
         {
             for(i=1;i<=entrants;i++)
             {
-                nodes[nodes.length-i].setName("Player "+i);
+                //nodes[nodes.length-i].setName("Player "+i);
             }
         }
         function drawNode(node,x,y,depth)

@@ -109,4 +109,6 @@ class Match extends CActiveRecord
             'criteria'=>$criteria,
         ));
     }
+    
+
 }

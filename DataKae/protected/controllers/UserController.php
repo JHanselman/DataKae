@@ -32,12 +32,8 @@ class UserController extends Controller
                 'users'=>array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('create'),
+                'actions'=>array('create','update'),
                 'users'=>array('@'),
-            ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('update'),
-                'roles'=>array('authenticated'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions'=>array('admin','delete'),
@@ -92,6 +88,16 @@ class UserController extends Controller
     {
         $model=$this->loadModel($id);
         
+        $auth=Yii::app()->authManager;
+        if ($auth->isAssigned('TO', $id))
+        {
+            $model->role = 2;
+        }
+        else
+        {
+            $model->role = 1;
+        }
+        
         // set the parameters for the bizRule
         $params = array('User'=>$model);
     
@@ -106,6 +112,19 @@ class UserController extends Controller
         if(isset($_POST['User']))
             {
                 $model->attributes=$_POST['User'];
+                
+                Yii::trace(CVarDumper::dumpAsString($model->role,'vardump'));
+                if (Yii::app()->user->checkAccess('admin'))
+                {
+                    if($model->role == 1)
+                    {
+                        $auth->revoke('TO', $id);
+                    }
+                    if($model->role == 2)
+                    {
+                        $auth->assign('TO', $id);
+                    }
+                }
                 if($model->save())
                     $this->redirect(array('view','id'=>$model->userId));
             }

@@ -2,6 +2,7 @@
 /* @var $this SiteController */
 
 $this->pageTitle=Yii::app()->name;
+$this->breadcrumbs=array('View Tourneys');
 ?>
 
 <h1>Tourneys</h1>
