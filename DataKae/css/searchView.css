@@ -1,0 +1,28 @@
+
+.players
+{
+    background-color: black; 
+}
+
+.characters
+{
+    width: 30%;
+}
+
+.W
+{
+    width: 5%;
+    float: left;
+    background-color: Green;
+}
+
+.L
+{
+    width: 5%;
+    float: left;
+    background-color: Red;
+}
+
+.BestOf {
+    float: left;
+}

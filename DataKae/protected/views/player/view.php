@@ -25,4 +25,47 @@ $this->menu=array(
         'playerLastName',
         'playerNickname',
     ),
-)); ?>
+)); 
+?>
+<br>
+<label> Character Usage: </label>
+
+
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+    'id'=>'characterusage-grid',
+    'dataProvider'=>$characterUsage->search(),
+    'summaryText' => '',
+    'columns'=>array(
+        'characterName',
+        'games'
+    ),
+));
+?>
+<label> Stage Usage: </label>
+
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+    'id'=>'stageusage-grid',
+    'dataProvider'=>$stageUsage->search(),
+    'summaryText' => '',
+    'columns'=>array(
+        'stageName',
+        'games'
+    ),
+));
+?>
+<label> Amount of times lost to: <label>
+
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+    'id'=>'vslossesusage-grid',
+    'dataProvider'=>$vsLosses->search(),
+    'summaryText' => '',
+    'columns'=>array(
+        'characterName',
+        'losses'
+    ),
+));
+
+?>

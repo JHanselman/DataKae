@@ -16,13 +16,19 @@
    winner1 integer, 
    winner2 integer
  */
-class Match extends CActiveRecord
+class SearchForm extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return User the static model class
      */
+     
+    public $tournamentName = null;
+    public $player_1 = null;
+    public $character1 = null;
+    public $character2 = null;
+    
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -56,7 +62,7 @@ class Match extends CActiveRecord
             //array('userName, passwordHash, emailAddress', 'length', 'max'=>128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('matchId, tournamentId, player1, player2, winner1', 'safe', 'on'=>'search'),
+            array('matchId, tournamentId, player1, player2, winner1, gamesNr, tournamentName, player_1, character1, character2', 'safe', 'on'=>'search'),
         );
     }
 
@@ -78,6 +84,8 @@ class Match extends CActiveRecord
     public function attributeLabels()
     {
         return array(
+        'character1' => 'Character 1',
+        'character2' => 'Character 2'
         );
     }
 
@@ -85,29 +93,7 @@ class Match extends CActiveRecord
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function search($tournamentId=false)
-    {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
 
-        $criteria=new CDbCriteria;
-
-        $criteria->compare('"matchId"',$this->matchId);
-        $criteria->compare('"roundId"',$this->roundId);        
-        $criteria->compare('"tournamentId"',$this->tournamentId);
-        $criteria->compare('"previousMatch"',$this->previousMatch,true);
-        $criteria->compare('nextMatch',$this->nextMatch,true);
-        $criteria->compare('"player1"',$this->player1);
-        $criteria->compare('"player2"',$this->player2);
-        $criteria->compare('"player3"',$this->player3,true);
-        $criteria->compare('"player4"',$this->player4,true);
-        $criteria->compare('"winner1"',$this->winner1);
-        $criteria->compare('"winner2"',$this->winner2,true);
-
-        return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-        ));
-    }
     
     public function specialSearch()
     {
@@ -118,20 +104,41 @@ class Match extends CActiveRecord
         
         
         $criteria->with = array('games');
-        $criteria->compare('"matchId"',$this->matchId);
-        $criteria->compare('"roundId"',$this->roundId);        
-        $criteria->compare('"tournamentId"',$this->tournamentId);
-        $criteria->compare('"previousMatch"',$this->previousMatch,true);
-        $criteria->compare('nextMatch',$this->nextMatch,true);
-        $criteria->compare('"player1"',$this->player1);
-        $criteria->compare('"player2"',$this->player2);
-        $criteria->compare('"player3"',$this->player3,true);
-        $criteria->compare('"player4"',$this->player4,true);
-        $criteria->compare('"winner1"',$this->winner1);
-        $criteria->compare('"winner2"',$this->winner2,true);
-
+        $criteria->together = true;
+        
+        
+        $conditions = array();
+        $params = array();
+        
+        if ($this->gamesNr)
+        {
+            $conditions[]='("t"."gamesNr"=:gamesNr)';
+            $params[':gamesNr'] = $this->gamesNr;
+        }
+        
+        if ($this->character1)
+        {
+            $conditions[]='("games"."characterPlayer1"=:character1 OR "games"."characterPlayer2"=:character1)';
+            $params[':character1'] = $this->character1;
+        }
+        
+        if ($this->character2)
+        {
+            $conditions[]='("games"."characterPlayer1"=:character2 OR "games"."characterPlayer2"=:character2)';
+            $params[':character2'] = $this->character2;
+        }
+        
+         $criteria->condition = implode(' AND ',$conditions);
+         $criteria->params = $params;
+        
+        $criteria->order = '"createdOn" DESC';
+        
+        
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+            'pagination'=>array(
+            'pageSize'=>20
+      )
         ));
     }
     

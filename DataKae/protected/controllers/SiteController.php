@@ -161,4 +161,10 @@ class SiteController extends Controller
                 $this->render('error', $error);
         }
     }
+    
+    public function actionStats()
+    {
+        $model = new CharacterVsWins();
+        $this->render('stats',array('model'=>$model));
+    }
 }

@@ -1,0 +1,8 @@
+.statscolumn
+{
+    float: left;
+    width: 23%;
+    height: 200px;
+    overflow:auto;
+    padding: 5px;
+}

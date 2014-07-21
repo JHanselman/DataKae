@@ -51,9 +51,20 @@ class PlayerController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->loadModel($id);
+        
+        $characterUsageModel = new CharacterUsage;
+        $characterUsageModel->player = $id;
+        
+        $stageUsageModel = new StageUsage;
+        $stageUsageModel->player = $id;
+        
+        $vsLossesModel = new PlayerVsCharacterLosses;
+        $vsLossesModel->player = $id;
+        
         $this->render('view',array(
-            'model'=>$this->loadModel($id),
-        ));
+            'model'=>$this->loadModel($id),'characterUsage' => $characterUsageModel,'stageUsage' =>$stageUsageModel, 'vsLosses' => $vsLossesModel)
+        );
     }
 
     /**

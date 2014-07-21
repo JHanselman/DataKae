@@ -43,9 +43,11 @@
                 array('label'=>'User list', 'url'=>array('/user/index')),
                 array('label'=>'Player list', 'url'=>array('/player/index')), 
                 array('label'=>'Manage matches', 'url'=>array('/match/admin'), 'visible'=>Yii::app()->user->checkAccess('admin')),
+                array('label'=>'Search matches', 'url'=>array('/match/search')),
                 array('label'=>'Manage users', 'url'=>array('/user/admin'), 'visible'=>Yii::app()->user->checkAccess('admin')),
                 array('label'=>'Manage players', 'url'=>array('/player/admin'), 'visible'=>Yii::app()->user->checkAccess('admin')),
                 array('label'=>'My tourneys', 'url'=>array('input/mytourneys', 'userId'=>Yii::app()->user->getId()),'visible'=> !Yii::app()->user->isGuest),
+                array('label'=>'Character Stats', 'url'=>array('/site/stats')),
                 array('label'=>'My profile', 'url'=>array('/user/view/'.Yii::app()->user->getId()),'visible'=> !Yii::app()->user->isGuest),
                 array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
                 array('label'=>'Contact', 'url'=>array('/site/contact', 'view'=>'contact'))

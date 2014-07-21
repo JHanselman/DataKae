@@ -28,7 +28,7 @@ class MatchController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('index','view','autocomplete'),
+                'actions'=>array('index','view','autocomplete','search'),
                 'users'=>array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -234,6 +234,19 @@ class MatchController extends Controller
         ));
     }
     
+    public function actionSearch()
+    {
+        $model=new searchForm('search');
+        
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['SearchForm']))
+            $model->attributes=$_GET['SearchForm'];
+
+        $this->render('search',array(
+            'model'=>$model,
+        ));
+    }
+    
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
@@ -274,7 +287,5 @@ class MatchController extends Controller
         echo CJSON::encode($res);
         Yii::app()->end();
     }
-    
-
     
 }

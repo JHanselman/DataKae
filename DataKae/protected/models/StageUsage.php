@@ -1,40 +1,27 @@
 <?php
 
 /**
- * This is the model class for table "Users".
+ * This is the model class for view "CharacterUsage".
  *
- * The followings are the available columns in table 'tbl_user':
- * @property integer $id
- * @property string $username
- * @property string $password
- * @property string $email
  */
-class Game extends CActiveRecord
+class StageUsage extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return User the static model class
+     * @return Regions the static model class
      */
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
     }
 
-    public function behaviors()
-    {
-        return array(
-            'withRelated'=>array(
-                'class'=>'ext.wr.WithRelatedBehavior',
-            ),
-        );
-    }
     /**
      * @return string the associated database table name
      */
     public function tableName()
     {
-        return 'Games';
+        return 'StageUsage';
     }
 
     /**
@@ -45,10 +32,9 @@ class Game extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            //array('userName, passwordHash, emailAddress', 'length', 'max'=>128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            //array('id, userName, passwordHash, emailAddress', 'safe', 'on'=>'search'),
+            array('player, character, games', 'safe', 'on'=>'search'),
         );
     }
 
@@ -60,8 +46,6 @@ class Game extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'sets'=>array(self::BELONGS_TO, 'Match', 'matchId'),
-            'games'=>array(self::HAS_ONE, 'SearchForm', 'matchId')
         );
     }
 
@@ -85,22 +69,12 @@ class Game extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('gameId',$this->id);
+        $criteria->compare('stageName',$this->stageName);
+        $criteria->compare('player',$this->player);
+        $criteria->order ='games DESC';
         
-        $criteria->compare('matchId',$this->matchId,true);
-        $criteria->compare('stageId',$this->stageId,true);
-
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
-    }
-    
-    public function getGamesByMatchId($matchId)
-    {
-        $criteria=new CDBCriteria;
-        $criteria->condition = '"matchId"=:matchId';
-        $criteria->params = array(':matchId' => $matchId);
-        $criteria->order = '"gameNumber" ASC';
-        return (new CActiveDataProvider($this, array('criteria'=>$criteria,)));
     }
 }
