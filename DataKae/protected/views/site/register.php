@@ -6,7 +6,7 @@
 //$cs = Yii::app()->getClientScript();
 //$cs->registerScriptFile('/application/external/jquery-2.0.2.js');
 
-$criteria = new CDbCriteria(array('select'=>('"locationId","locationName"'),'order'=>'"locationName" ASC'));
+$criteria = new CDbCriteria(array('select'=>('"locationId","locationName", "regionName"'),'order'=>'"locationName" ASC'));
     
 $locations=Location::model()->findAll($criteria);
 $location='empty';
@@ -69,7 +69,10 @@ $this->breadcrumbs=array(
     
     <div class="dropdownbox">
         <?php echo $form->labelEx($model,'locationName'); ?>
-        <?php echo $form->dropDownList($model,'locationId', CHtml::listData($locations,'locationId','locationName'),array('empty' => '(Select a location)')); ?>
+        <?php 
+        $list = CHtml::listData($locations,'locationId','locationName','regionName');
+        Yii::trace(serialize($list));
+        echo $form->dropDownList($model,'locationId',$list ); ?>
         <?php echo $form->error($model,'location'); ?>
     </div>
     

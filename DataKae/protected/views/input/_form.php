@@ -41,6 +41,11 @@ $location='empty';
             'options' => array(
                 'showAnim' => 'fold',
                 'dateFormat'=>'yy-mm-dd',
+                'changeMonth'=>true,
+                'changeYear'=>true,
+                'yearRange'=>'2000:2099',
+                'minDate' => '2000-01-01',      // minimum date
+                'maxDate' => '2099-12-31',      // maximum date
                 ),
             'htmlOptions' => array(
                 'size' => '10',         // textField size

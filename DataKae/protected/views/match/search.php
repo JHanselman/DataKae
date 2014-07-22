@@ -10,7 +10,7 @@ $this->breadcrumbs=array(
 $charCriteria = new CDbCriteria(array('select'=>('"characterId","characterName"'),'order'=>'"characterName" ASC'));
 $stageCriteria = new CDbCriteria(array('select'=>('"stageId","stageName"'),'order'=>'"stageName" ASC'));
 $characters=CHtml::listData(Characters::model()->findAll($charCriteria),'characterId','characterName');
-$stages=CHtml::listData(Stages::model()->findAll($stageCriteria),'stageId','stageName');;
+$stages = CHtml::listData(Stages::model()->findAll($stageCriteria),'stageId','stageName');;
 
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
@@ -36,7 +36,8 @@ Fill in what you are looking for and press the search button to find it.
 <div class="search-form" >
 <?php $this->renderPartial('_search',array(
     'model' => $model,
-    'characters' => $characters
+    'characters' => $characters,
+    'stages' => $stages
 )); ?>
 </div><!-- search-form -->
 

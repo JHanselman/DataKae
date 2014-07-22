@@ -26,8 +26,13 @@ class SearchForm extends CActiveRecord
      
     public $tournamentName = null;
     public $player_1 = null;
+    public $player_2 = null;
     public $character1 = null;
     public $character2 = null;
+    public $stageId = null;
+    
+    public $before = null;
+    public $after = null;
     
     public static function model($className=__CLASS__)
     {
@@ -62,7 +67,7 @@ class SearchForm extends CActiveRecord
             //array('userName, passwordHash, emailAddress', 'length', 'max'=>128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('matchId, tournamentId, player1, player2, winner1, gamesNr, tournamentName, player_1, character1, character2', 'safe', 'on'=>'search'),
+            array('matchId, tournamentId, player1, player2, winner1, gamesNr, tournamentName, player_1, player_2, character1, character2, stageId, before', 'safe', 'on'=>'search'),
         );
     }
 
@@ -84,8 +89,11 @@ class SearchForm extends CActiveRecord
     public function attributeLabels()
     {
         return array(
+        'player_1' => 'Player 1',
+        'player_2' => 'Player 2',
         'character1' => 'Character 1',
-        'character2' => 'Character 2'
+        'character2' => 'Character 2',
+        'stageId' => 'Stage',
         );
     }
 
@@ -103,17 +111,36 @@ class SearchForm extends CActiveRecord
         $criteria=new CDbCriteria;
         
         
-        $criteria->with = array('games');
+        $criteria->with = array('games' =>array('select'=> false));
         $criteria->together = true;
-        
         
         $conditions = array();
         $params = array();
+        
+        if ($this->player_1)
+        {
+            $p1=Player::model()->find('"playerNickname"=:playerNickname', array(':playerNickname'=>$this->player_1));
+            $conditions[]='("t"."player1"=:player_1 OR "t"."player2"=:player_1)';
+            $params[':player_1'] = $p1->playerId; 
+        }
+        
+        if ($this->player_2)
+        {
+            $p2=Player::model()->find('"playerNickname"=:playerNickname', array(':playerNickname'=>$this->player_2));
+            $conditions[]='("t"."player1"=:player_2 OR "t"."player2"=:player_2)';
+            $params[':player_2'] = $p2->playerId; 
+        }
         
         if ($this->gamesNr)
         {
             $conditions[]='("t"."gamesNr"=:gamesNr)';
             $params[':gamesNr'] = $this->gamesNr;
+        }
+        
+        if ($this->stageId)
+        {
+            $conditions[]='("games"."stageId"=:stageId)';
+            $params[':stageId'] = $this->stageId;
         }
         
         if ($this->character1)
@@ -128,8 +155,19 @@ class SearchForm extends CActiveRecord
             $params[':character2'] = $this->character2;
         }
         
-         $criteria->condition = implode(' AND ',$conditions);
-         $criteria->params = $params;
+        if ($this->before)
+        {
+            $conditions[]='("t"."tournamentId" IN (SELECT "tournamentId" FROM "Tournaments" WHERE "startDate"<:before))';
+            $params[':before'] = $this->before;
+        }        
+        if ($this->after)
+        {
+            $conditions[]='("t"."tournamentId" IN (SELECT "tournamentId" FROM "Tournaments" WHERE "endDate">:after))';
+            $params[':after'] = $this->after;
+        }
+        
+        $criteria->condition = implode(' AND ',$conditions);
+        $criteria->params = $params;
         
         $criteria->order = '"createdOn" DESC';
         
