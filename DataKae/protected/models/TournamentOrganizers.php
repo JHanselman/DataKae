@@ -92,10 +92,6 @@ class TournamentOrganizers extends CActiveRecord
         ));
     }
     
-    public function testFunction()
-    {
-        return true;
-    }
     
     public function ownTourney($tournamentId,$userId)
     {

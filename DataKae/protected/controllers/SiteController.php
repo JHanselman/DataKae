@@ -167,4 +167,16 @@ class SiteController extends Controller
         $model = new CharacterVsWins();
         $this->render('stats',array('model'=>$model));
     }
+    
+    public function actionDownloads()
+    {
+        $this->render('downloads');
+    }
+    
+    public function actionDownloadMatchslip()
+    {
+        $path = Yii::app()->request->hostInfo.Yii::app()->request->baseURL . '/files/matchslips/NeutralSlip.pdf';
+        
+        return Yii::app()->getRequest()->sendFile('regularMatchSlip.pdf', @file_get_contents($path));
+    }
 }

@@ -16,6 +16,7 @@ return array(
     'import'=>array(
         'application.models.*',
         'application.components.*',
+        'application.controllers.3DS.*'
     ),
     
     'modules'=>array(
@@ -28,6 +29,16 @@ return array(
             'ipFilters'=>array('127.0.0.1','::1'),
         ),
         
+        'forum'=>array(
+            'class'=>'application.modules.bbii.BbiiModule',
+            'adminId'=>10,
+            'forumTitle' => 'DataKae Forum',
+            'userClass'=>'User',
+            'userIdColumn'=>'"userId"',
+            'userNameColumn'=>'userName',
+            'userMailColumn'=>'emailAddress',
+            'bbiiTheme'=>'datakae',
+        ),  
     ),
 
     // application components
@@ -46,6 +57,8 @@ return array(
                 '<controller:\w+>/<id:\d+>'=>'<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
                 '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                '3DS/<controller:\w+>/<action:\w+>'=>'3DS/<controller>/<action>',
+                'WiiU/<controller:\w+>/<action:\w+>'=>'WiiU/<controller>/<action>'
             ),
         ),
         

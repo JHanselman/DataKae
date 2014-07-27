@@ -63,8 +63,11 @@ class TournamentPlayers extends CActiveRecord
     
     public function deleteIt($tournamentId, $playerId)
     {
-        Yii::app()->db->createCommand()
-        ->delete('Tournament_Players','"tournamentId"=:tournamentId AND "playerId"=:playerId', array(':tournamentId' => $tournamentId,':playerId' => $playerId));
+        
+        file_put_contents('E:/wamp/log.txt',$tournamentId);
+        Yii::app()->db->createCommand()->delete(
+            'Tournament_Players','"tournamentId"=:tournamentId AND "playerId"=:playerId',
+               array(':tournamentId' => $tournamentId,':playerId' => $playerId));
     }
     
     

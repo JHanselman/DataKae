@@ -35,5 +35,8 @@ INSERT INTO "Characters" ("characterName") VALUES ('Ike');
 INSERT INTO "Characters" ("characterName") VALUES ('Palutena');
 INSERT INTO "Characters" ("characterName") VALUES ('Pac-Man');
 INSERT INTO "Characters" ("characterName") VALUES ('Mii Fighter');
+INSERT INTO "Characters" ("characterName") VALUES ('Captain Falcon');
+INSERT INTO "Characters" ("characterName") VALUES ('Lucina');
+INSERT INTO "Characters" ("characterName") VALUES ('Robin');
 
 COMMIT;

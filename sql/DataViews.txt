@@ -1,0 +1,13 @@
+CREATE VIEW "CharacterVSWins" AS
+SELECT "character1","character2",coalesce("leftwins"+"rightwins","leftwins","rightwins") AS "wins"
+FROM
+(SELECT "characterPlayer1" AS "character1","characterPlayer2" AS "character2", count(DISTINCT "gameId") as "leftwins" 
+	FROM "Games"
+	WHERE ("winner1"=1)
+	GROUP BY "characterPlayer1","characterPlayer2") AS "leftSide"
+FULL OUTER JOIN 
+(SELECT "characterPlayer1" AS "character2","characterPlayer2" AS "character1", count(DISTINCT "gameId") as "rightwins"
+	FROM "Games"
+	WHERE ("winner1"=2)
+	GROUP BY "character1","character2") AS "rightSide"
+USING ("character1","character2");

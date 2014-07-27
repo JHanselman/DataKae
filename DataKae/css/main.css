@@ -3,7 +3,7 @@ body
     margin: 0;
     padding: 0;
     color: white;
-    --background: #383838;
+    background: #383838;
     background-image:url('images/website-background.png');
     background-repeat:no-repeat;
     background-attachment:fixed;
@@ -16,9 +16,7 @@ p
 }
 
 img{
-    border-style:solid;
-    border-color:#FFCC00;
-    border-width:3px;
+
     box-shadow: 2px 2px 15px #000;
     margin: 5px;
 }
@@ -176,6 +174,8 @@ img{
     display: block;
 }
 
+
+
     #menuhh ul ul {
     background: #5f6975; border-radius: 0px; padding: 0;
     position: absolute; top: 100%;
@@ -193,8 +193,24 @@ img{
             #menuhh ul ul li a:hover {
                 background: #4b545f;
             }
-
-
+#menu-top ul li ul li{clear: left;}
+#menu-top ul { list-style: none; margin: 0; padding: 0; position: relative; height: 30px; }
+ 
+#menu-top ul li { display: block; height: 28px; float: left; overflow: visible; }
+#menu-top ul li:hover > ul { display: block; }
+#menu-top ul li ul :hover{ display: block; }
+#menu-top ul li ul li:hover{ display: block; }
+#menu-top ul li ul { display: block; }
+#menu-top ul li a { float: left; display: block; }
+ 
+#menu-top ul li ul { display: none; position: absolute; top: 100%;
+                    background: #000; color: #fff; height: auto;
+}
+ 
+#menu-top ul li ul li a { color: #ccc; padding: 4px 14px; display: block; }
+ 
+#menu-top ul li ul li.active a,
+#menu-top ul li ul li a:hover { color: #fff; }
 
 
 h2 {

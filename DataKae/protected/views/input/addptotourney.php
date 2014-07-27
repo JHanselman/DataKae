@@ -62,7 +62,7 @@ echo CHtml::ajaxSubmitButton('Add selected player',Yii::app()->createUrl('input/
 ?>
 
 <?php
-echo CHtml::ajaxSubmitButton('Remove selected player',Yii::app()->createUrl('input/removePlayerFromTourney/2'),
+echo CHtml::ajaxSubmitButton('Remove selected player',Yii::app()->createUrl('input/removePlayerFromTourney',array('id' => $model->tournamentId)),
                     array(
                         'type'=>'POST',
                         'data'=> 'js:{"TournamentPlayer": playerManager.selectedParticipant}',

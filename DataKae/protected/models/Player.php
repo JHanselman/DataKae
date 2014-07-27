@@ -94,7 +94,7 @@ class Player extends CActiveRecord
         ));
     }
     
-    public function tourneyParticipants($tournamentId, $not)
+    public function tourneyParticipantsWiiU($tournamentId, $not)
     {
         // This is probably ugly as hell.
         
@@ -102,16 +102,53 @@ class Player extends CActiveRecord
         
         if ($not)
         {
-            $criteria2->join='LEFT OUTER JOIN "Tournament_Players" ds on ds."playerId" = t."playerId"';
+            $criteria2->join='LEFT OUTER JOIN "WiiU_Tournament_Players" ds on ds."playerId" = t."playerId"';
             $criteria2->condition = 'ds."tournamentId"=:tournamentId';
         }
         else
         {
            $criteria2->condition = 't."playerId" NOT IN 
         (SELECT "Players"."playerId"
-        FROM "Players" LEFT OUTER JOIN "Tournament_Players"
-        ON "Players"."playerId" = "Tournament_Players"."playerId"
-        WHERE "Tournament_Players"."tournamentId" = :tournamentId) 
+        FROM "Players" LEFT OUTER JOIN "WiiU_Tournament_Players"
+        ON "Players"."playerId" = "WiiU_Tournament_Players"."playerId"
+        WHERE "WiiU_Tournament_Players"."tournamentId" = :tournamentId) 
+        ';
+        }
+        
+        $criteria2->params = array(':tournamentId' => $tournamentId);
+        
+        $criteria2->compare('"playerId"',$this->playerId);
+        $criteria2->compare('"playerName"',$this->playerName,true);
+        $criteria2->compare('"playerLastName"',$this->playerLastName,true);
+        $criteria2->compare('"playerNickname"',$this->playerNickname,true);
+        $criteria2->compare('"locationId"',$this->locationId,true);
+        
+return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria2,
+        'pagination'=>array(
+            'pageSize'=>20
+      ),
+        ));
+    }
+    
+     public function tourneyParticipants3DS($tournamentId, $not)
+    {
+        // This is probably ugly as hell.
+        
+        $criteria2=new CDbCriteria;
+        
+        if ($not)
+        {
+            $criteria2->join='LEFT OUTER JOIN "3DS_Tournament_Players" ds on ds."playerId" = t."playerId"';
+            $criteria2->condition = 'ds."tournamentId"=:tournamentId';
+        }
+        else
+        {
+           $criteria2->condition = 't."playerId" NOT IN 
+        (SELECT "Players"."playerId"
+        FROM "Players" LEFT OUTER JOIN "3DS_Tournament_Players"
+        ON "Players"."playerId" = "3DS_Tournament_Players"."playerId"
+        WHERE "3DS_Tournament_Players"."tournamentId" = :tournamentId) 
         ';
         }
         

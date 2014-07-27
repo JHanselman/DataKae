@@ -11,7 +11,7 @@ $stages=Stages::model()->findAll($stageCriteria);
 $tournament = Tournament::model()->findByPk($match->tournamentId);
 
 $this->breadcrumbs=array(
-    'View Tourneys'=>array('//input/admin'), $tournament->tournamentName =>array('//input/view', 'id' => $tournament->tournamentId),
+    'View Tourneys'=>array('//input/index'), $tournament->tournamentName =>array('//input/view', 'id' => $tournament->tournamentId),
     'Match',
 );
 

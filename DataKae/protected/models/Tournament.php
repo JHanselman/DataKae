@@ -152,5 +152,9 @@ Yii::trace($this->tournamentName);
         }
     }
     
+    public function editTourney()
+    {
+        return "editOwnTourney";
+    }
 
 }

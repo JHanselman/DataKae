@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
     'Players'=>array('index'),
-    $model->playerId,
+    $model->playerNickname,
 );
 
 $this->menu=array(

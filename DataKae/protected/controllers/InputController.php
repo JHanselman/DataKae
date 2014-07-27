@@ -108,7 +108,7 @@ class InputController extends Controller
     {
         if(isset($_POST["TournamentPlayer"][0]))
         {
-            $model = TournamentPlayers::model();            
+            $model = TournamentPlayers::model();
             $model->deleteIt($id, $_POST["TournamentPlayer"][0]);
         }
     }

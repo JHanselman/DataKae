@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
 <p>This website was blablabla</p>
 
 <?php 
-$charCriteria = new CDbCriteria(array('select'=>('"characterId","characterName"'),'order'=>'"characterName" ASC'));
+/*$charCriteria = new CDbCriteria(array('select'=>('"characterId","characterName"'),'order'=>'"characterName" ASC'));
 $characters=Characters::model()->findAll($charCriteria);
 $character=Characters::model();
 
@@ -25,7 +25,7 @@ $haha=array();
             $haha[$char->characterId]=$char->characterName;
     }
 
-//$this->widget('application.components.CharacterSelectScreen', array('characters'=> $characters)); ?>
+$this->widget('application.components.CharacterSelectScreen', array('characters'=> $characters)); ?>
 
 <div class="form">
 
